@@ -38,204 +38,242 @@
       <DataType>INTEGER|4s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="16" parent="6" name="SYS_IDX_SYS_PK_10125_10130">
+    <column id="16" parent="6" name="ATTENDEES_COUNT">
+      <Position>5</Position>
+      <DataType>INTEGER|4s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <index id="17" parent="6" name="SYS_IDX_SYS_PK_10231_10232">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="17" parent="6" name="SYS_IDX_SYS_FK_10129_10135">
+    <index id="18" parent="6" name="SYS_IDX_SYS_FK_10226_10234">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
     </index>
-    <key id="18" parent="6" name="SYS_PK_10125">
+    <key id="19" parent="6" name="SYS_PK_10231">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="19" parent="6" name="SYS_FK_10129">
+    <foreign-key id="20" parent="6" name="SYS_FK_10226">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <RefTableName>POST</RefTableName>
-      <RefKeyName>SYS_PK_10202</RefKeyName>
+      <RefKeyName>SYS_PK_10196</RefKeyName>
       <RefColNames>POST_ID</RefColNames>
     </foreign-key>
-    <column id="20" parent="7" name="POST_ID">
+    <column id="21" parent="7" name="POST_ID">
       <Position>1</Position>
       <DataType>CHARACTER(6)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="21" parent="7" name="PROPOSED_PRICE">
+    <column id="22" parent="7" name="PROPOSED_PRICE">
       <Position>2</Position>
       <DataType>DOUBLE|8s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="22" parent="7" name="SYS_IDX_SYS_PK_10149_10152">
+    <column id="23" parent="7" name="LOWEST_OFFER">
+      <Position>3</Position>
+      <DataType>DOUBLE|8s</DataType>
+    </column>
+    <index id="24" parent="7" name="SYS_IDX_SYS_PK_10254_10255">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="23" parent="7" name="SYS_IDX_SYS_FK_10151_10155">
+    <index id="25" parent="7" name="SYS_IDX_SYS_FK_10252_10257">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
     </index>
-    <key id="24" parent="7" name="SYS_PK_10149">
+    <key id="26" parent="7" name="SYS_PK_10254">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="25" parent="7" name="SYS_FK_10151">
+    <foreign-key id="27" parent="7" name="SYS_FK_10252">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <RefTableName>POST</RefTableName>
-      <RefKeyName>SYS_PK_10202</RefKeyName>
+      <RefKeyName>SYS_PK_10196</RefKeyName>
       <RefColNames>POST_ID</RefColNames>
     </foreign-key>
-    <column id="26" parent="8" name="POST_ID">
+    <column id="28" parent="8" name="POST_ID">
       <Position>1</Position>
       <DataType>CHARACTER(6)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="27" parent="8" name="TITLE">
+    <column id="29" parent="8" name="TITLE">
       <Position>2</Position>
       <DataType>VARCHAR(20)|12s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="28" parent="8" name="DESCRIPTION">
+    <column id="30" parent="8" name="DESCRIPTION">
       <Position>3</Position>
       <DataType>VARCHAR(50)|12s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="29" parent="8" name="USER_ID">
+    <column id="31" parent="8" name="STATUS">
       <Position>4</Position>
+      <DataType>VARCHAR(6)|12s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;OPEN&apos;</DefaultExpression>
+    </column>
+    <column id="32" parent="8" name="USER_ID">
+      <Position>5</Position>
       <DataType>CHARACTER(8)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="30" parent="8" name="SYS_IDX_SYS_PK_10098_10103">
+    <column id="33" parent="8" name="DATE">
+      <Position>6</Position>
+      <DataType>TIMESTAMP|93s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="34" parent="8" name="IMAGE">
+      <Position>7</Position>
+      <DataType>VARCHAR(40)|12s</DataType>
+    </column>
+    <index id="35" parent="8" name="SYS_IDX_SYS_PK_10199_10200">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="31" parent="8" name="SYS_IDX_SYS_FK_10102_10108">
+    <index id="36" parent="8" name="SYS_IDX_SYS_FK_10197_10206">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
     </index>
-    <key id="32" parent="8" name="SYS_PK_10098">
+    <key id="37" parent="8" name="SYS_PK_10199">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="33" parent="8" name="SYS_FK_10102">
+    <foreign-key id="38" parent="8" name="SYS_FK_10197">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
       <RefTableName>USER</RefTableName>
       <RefKeyName>SYS_PK_10092</RefKeyName>
       <RefColNames>USER_ID</RefColNames>
     </foreign-key>
-    <column id="34" parent="9" name="POST_ID">
+    <column id="39" parent="9" name="POST_ID">
       <Position>1</Position>
       <DataType>CHARACTER(6)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="35" parent="9" name="USER_ID">
+    <column id="40" parent="9" name="USER_ID">
       <Position>2</Position>
       <DataType>CHARACTER(8)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="36" parent="9" name="REPLY">
+    <column id="41" parent="9" name="TIME">
       <Position>3</Position>
+      <DataType>TIMESTAMP|93s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+    </column>
+    <column id="42" parent="9" name="REPLY">
+      <Position>4</Position>
       <DataType>DOUBLE|8s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="37" parent="9" name="SYS_IDX_SYS_PK_10113_10116">
+    <index id="43" parent="9" name="SYS_IDX_SYS_PK_10215_10216">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID
-USER_ID</ColNames>
+USER_ID
+TIME</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="38" parent="9" name="SYS_IDX_SYS_FK_10114_10120">
+    <index id="44" parent="9" name="SYS_IDX_SYS_FK_10211_10219">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
     </index>
-    <index id="39" parent="9" name="SYS_IDX_SYS_FK_10115_10122">
+    <index id="45" parent="9" name="SYS_IDX_SYS_FK_10212_10221">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
     </index>
-    <key id="40" parent="9" name="SYS_PK_10113">
+    <key id="46" parent="9" name="SYS_PK_10215">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID
-USER_ID</ColNames>
+USER_ID
+TIME</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="41" parent="9" name="SYS_FK_10114">
+    <foreign-key id="47" parent="9" name="SYS_FK_10211">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <RefTableName>POST</RefTableName>
-      <RefKeyName>SYS_PK_10202</RefKeyName>
+      <RefKeyName>SYS_PK_10196</RefKeyName>
       <RefColNames>POST_ID</RefColNames>
     </foreign-key>
-    <foreign-key id="42" parent="9" name="SYS_FK_10115">
+    <foreign-key id="48" parent="9" name="SYS_FK_10212">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
       <RefTableName>USER</RefTableName>
       <RefKeyName>SYS_PK_10092</RefKeyName>
       <RefColNames>USER_ID</RefColNames>
     </foreign-key>
-    <column id="43" parent="10" name="POST_ID">
+    <column id="49" parent="10" name="POST_ID">
       <Position>1</Position>
       <DataType>CHARACTER(6)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="44" parent="10" name="ASKING_PRICE">
+    <column id="50" parent="10" name="ASKING_PRICE">
       <Position>2</Position>
       <DataType>DOUBLE|8s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="45" parent="10" name="MINIMUM_RAISE">
+    <column id="51" parent="10" name="MINIMUM_RAISE">
       <Position>3</Position>
       <DataType>DOUBLE|8s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="46" parent="10" name="SYS_IDX_SYS_PK_10138_10142">
+    <column id="52" parent="10" name="HIGHEST_OFFER">
+      <Position>4</Position>
+      <DataType>DOUBLE|8s</DataType>
+    </column>
+    <index id="53" parent="10" name="SYS_IDX_SYS_PK_10244_10245">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="47" parent="10" name="SYS_IDX_SYS_FK_10141_10146">
+    <index id="54" parent="10" name="SYS_IDX_SYS_FK_10241_10247">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
     </index>
-    <key id="48" parent="10" name="SYS_PK_10138">
+    <key id="55" parent="10" name="SYS_PK_10244">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="49" parent="10" name="SYS_FK_10141">
+    <foreign-key id="56" parent="10" name="SYS_FK_10241">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>POST_ID</ColNames>
       <RefTableName>POST</RefTableName>
-      <RefKeyName>SYS_PK_10202</RefKeyName>
+      <RefKeyName>SYS_PK_10196</RefKeyName>
       <RefColNames>POST_ID</RefColNames>
     </foreign-key>
-    <column id="50" parent="11" name="USER_ID">
+    <column id="57" parent="11" name="USER_ID">
       <Position>1</Position>
       <DataType>CHARACTER(8)|1s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="51" parent="11" name="USER_NAME">
+    <column id="58" parent="11" name="USER_NAME">
       <Position>2</Position>
       <DataType>VARCHAR(20)|12s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="52" parent="11" name="USER_PASSWORD">
+    <column id="59" parent="11" name="USER_PASSWORD">
       <Position>3</Position>
       <DataType>VARCHAR(20)|12s</DataType>
     </column>
-    <index id="53" parent="11" name="SYS_IDX_SYS_PK_10092_10094">
+    <index id="60" parent="11" name="SYS_IDX_SYS_PK_10092_10094">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="54" parent="11" name="SYS_PK_10092">
+    <key id="61" parent="11" name="SYS_PK_10092">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>USER_ID</ColNames>
       <Primary>1</Primary>

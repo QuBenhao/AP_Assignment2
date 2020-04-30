@@ -1,22 +1,43 @@
 package model.database;
 
 import javafx.scene.control.Alert;
+import main.UniLinkGUI;
 import model.exception.UserNotExistException;
 
 import java.sql.*;
 
-public class User {
-    final private static String searchQuery = "SELECT * from USER WHERE USER_ID = ? AND USER_PASSWORD = ?";
-    final private static String insertQuery = "INSERT INTO USER VALUES(?,?,?)";
-    private static PreparedStatement search = null;
-    private static PreparedStatement insert = null;
-    private static ResultSet result = null;
+public class UserRequest {
+    private Connection con;
+    private final String searchQuery = "SELECT * FROM USER WHERE USER_ID = ? AND USER_PASSWORD = ?";
+    private final String insertQuery = "INSERT INTO USER VALUES(?,?,?)";
+    private PreparedStatement search = null;
+    private PreparedStatement insert = null;
+    private ResultSet result = null;
 
-    public static boolean Login(Connection con,String USER_ID,String password){
+    public UserRequest(){
+        this.con = UniLinkGUI.con;
+        SetUpSQL();
+    }
+
+    public UserRequest(Connection con){
+        this.con = con;
+        SetUpSQL();
+    }
+
+    private void SetUpSQL(){
+        try {
+            search = con.prepareStatement(searchQuery);
+            insert = con.prepareStatement(insertQuery);
+        } catch (SQLException throwables) {
+            Alert alert = new Alert(Alert.AlertType.ERROR,throwables.toString());
+            alert.showAndWait();
+        }
+    }
+
+    public boolean Login(String USER_ID,String password){
         try {
             if(!ID_Check(USER_ID))
                 return false;
-            search = con.prepareStatement(searchQuery);
             search.setString(1,USER_ID);
             search.setString(2,password);
             result = search.executeQuery();
@@ -33,12 +54,11 @@ public class User {
         return false;
     }
 
-    public static boolean Register(Connection con,String[] input){
+    public boolean Register(String[] input){
         try {
             if(!ID_Check(input[0])){
                 return false;
             }
-            insert = con.prepareStatement(insertQuery);
             for(int i = 0 ; i < input.length; i++){
                 insert.setString(i+1,input[i]);
             }
@@ -56,7 +76,7 @@ public class User {
         return false;
     }
 
-    private static boolean ID_Check(String ID){
+    private boolean ID_Check(String ID){
         if(ID.length()!=8){
             Alert alert = new Alert(Alert.AlertType.ERROR,"The length of User_ID should be 8");
             alert.showAndWait();

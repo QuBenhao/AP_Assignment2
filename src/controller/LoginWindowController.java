@@ -10,12 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
-import model.database.User;
+import model.database.UserRequest;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public class LoginWindowController {
+    private UserRequest userRequest = new UserRequest();
     private Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
 
     @FXML private TextField nameTextField;
@@ -29,7 +30,7 @@ public class LoginWindowController {
             emptyIDError.showAndWait();
         }
         else{
-            if(User.Login(UniLinkGUI.con,nameTextField.getText(),passwordTextField.getText())) {
+            if(userRequest.Login(nameTextField.getText(),passwordTextField.getText())) {
                 switchStage();
             }
         }
@@ -51,7 +52,7 @@ public class LoginWindowController {
             result.ifPresent(name -> {
                 input[1] = name;
             });
-            if (User.Register(UniLinkGUI.con, input)){
+            if (userRequest.Register(input)){
                 switchStage();
             }
         }
