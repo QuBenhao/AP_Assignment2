@@ -17,8 +17,8 @@ public class UniLinkGUI extends Application{
     public static Connection con;
     public static HashMap<String,Stage> stages = new HashMap<>();
     public static HashMap<String,Object> controllers = new HashMap<>();
-    public static final String LOGIN_WINDOW = "/view/login_window.fxml";
-    public static final String MAIN_WINDOW = "/view/main_window.fxml";
+    public static final String LOGIN_WINDOW = "/view/LoginWindow.fxml";
+    public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
 
     public static void main(String[] args) {
         try {
@@ -31,6 +31,7 @@ public class UniLinkGUI extends Application{
         }
         launch(args);
         try {
+            con.commit();
             con.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

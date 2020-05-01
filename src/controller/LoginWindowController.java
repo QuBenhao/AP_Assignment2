@@ -15,7 +15,7 @@ import model.database.UserRequest;
 import java.io.IOException;
 import java.util.Optional;
 
-public class LoginWindowController {
+public class LoginWindowController implements Switchable{
     private UserRequest userRequest = new UserRequest();
     private Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
 
@@ -23,6 +23,11 @@ public class LoginWindowController {
     @FXML private TextField passwordTextField;
 
     @FXML private void initialize(){
+    }
+
+    private void reset(){
+        nameTextField.setText("");
+        passwordTextField.setText("");
     }
 
     @FXML private void LoginButtonHandler(ActionEvent actionEvent){
@@ -58,8 +63,9 @@ public class LoginWindowController {
         }
     }
 
-    private void switchStage(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MAIN_WINDOW));
+    @Override
+    public void switchStage() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
         Parent main_Root = null;
         try {
             main_Root = loader.load();
@@ -77,6 +83,6 @@ public class LoginWindowController {
         UniLinkGUI.controllers.put("LOGIN",this);
         UniLinkGUI.controllers.put("MAIN",controller);
         UniLinkGUI.stages.get("LOGIN").close();
+        reset();
     }
-
 }

@@ -4,17 +4,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import main.UniLinkGUI;
 import model.database.PostDB;
 import model.post.Post;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainWindowController {
+public class MainWindowController implements Switchable{
     String selectType[] = {"ALL","EVENT","SALE","JOB"};
     String selectStatus[] = {"ALL","OPEN","CLOSED"};
     String selectCreator[] = {"ALL","MY POST"};
@@ -65,6 +71,7 @@ public class MainWindowController {
 
     @FXML
     private void Quit(ActionEvent actionEvent) {
+        switchStage();
     }
 
     @FXML
@@ -77,14 +84,17 @@ public class MainWindowController {
 
     @FXML
     public void NewEvent(ActionEvent actionEvent) {
+        switchStage("EVENT");
     }
 
     @FXML
     public void NewSale(ActionEvent actionEvent) {
+        switchStage("SALE");
     }
 
     @FXML
     public void NewJob(ActionEvent actionEvent) {
+        switchStage("JOB");
     }
 
     private void UpdateView(){
@@ -96,5 +106,33 @@ public class MainWindowController {
     @FXML
     public void Update(ActionEvent actionEvent) {
         UpdateView();
+    }
+
+    @Override
+    public void switchStage() {
+        UniLinkGUI.stages.get("LOGIN").show();
+        UniLinkGUI.stages.get("MAIN").close();
+        UniLinkGUI.stages.remove("MAIN");
+        UniLinkGUI.controllers.remove("MAIN");
+    }
+
+    public void switchStage(String type){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/NewPost.fxml"));
+        Parent main_Root = null;
+        try {
+            main_Root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        NewPostController controller = (NewPostController) loader.getController();
+        controller.setUp(type,User_ID.getText());
+        Scene main_Scene = new Scene(main_Root,1200,800);
+        Stage stage = new Stage();
+        stage.setTitle("New Post");
+        stage.setScene(main_Scene);
+        stage.show();
+        UniLinkGUI.stages.put(type.toUpperCase(),stage);
+        UniLinkGUI.controllers.put(type.toUpperCase(),controller);
+        UniLinkGUI.stages.get("MAIN").hide();
     }
 }

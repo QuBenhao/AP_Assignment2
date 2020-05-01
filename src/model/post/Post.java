@@ -44,13 +44,15 @@ public abstract class Post implements Serializable{
 		return Status;
 	}
 
-	public ArrayList<Reply> getReply(){
+ 	public ArrayList<Reply> getReply(){
 		return Replies;
 	}
 
 	abstract public HBox visualize(String User_ID);
-	public abstract boolean handleReply(Reply reply);
-	public abstract String getReplyDetails();
+
+	abstract public boolean handleReply(Reply reply);
+
+	abstract public String getReplyDetails();
 
 	public String getImage() {
 		return Image;

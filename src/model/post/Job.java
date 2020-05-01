@@ -112,12 +112,24 @@ public class Job extends Post {
 		postDetails.setHalignment(lowest_offer,HPos.LEFT);
 
 		hBox.getChildren().add(postDetails);
-		Button reply = new Button("REPLY");
-		Button moredetails = new Button("MORE DETAILS");
-		hBox.getChildren().add(reply);
-		hBox.getChildren().add(moredetails);
+		if(User_ID.compareToIgnoreCase(super.getCreatorId())!=0){
+			Button reply = new Button("REPLY");
+			reply.setOnAction(actionEvent -> {
+
+			});
+			hBox.getChildren().add(reply);
+		}
+
+		if(User_ID.compareToIgnoreCase(super.getCreatorId())==0) {
+			Button moredetails = new Button("MORE DETAILS");
+			moredetails.setOnAction(actionEvent -> {
+
+			});
+			hBox.getChildren().add(moredetails);
+		}
 		return hBox;
 	}
+
 
 	public boolean handleReply(Reply reply) {
 		if(reply.getValue() >= LowestOffer) {
