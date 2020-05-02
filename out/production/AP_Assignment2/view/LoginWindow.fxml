@@ -1,16 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginWindowController">
     <children>
-        <Button layoutX="366.0" layoutY="242.0" mnemonicParsing="false" onAction="#LoginButtonHandler" prefHeight="32.0" prefWidth="65.0" text="Login" />
-        <TextField fx:id="nameTextField" layoutX="366.0" layoutY="115.0" />
-      <TextField fx:id="passwordTextField" layoutX="366.0" layoutY="174.0" />
-      <Button layoutX="453.0" layoutY="242.0" mnemonicParsing="false" onAction="#RegisterButtonHandler" text="Register" />
-      <Pane layoutX="82.0" layoutY="88.0" prefHeight="200.0" prefWidth="200.0" />
+      <HBox alignment="CENTER" spacing="100.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="174.0" spacing="30.0" style="-fx-background-color: lightskyblue;">
+               <children>
+                  <Label text="Welcome Back." textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="UniLink System" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0">
+               <children>
+                  <Label text="Login">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <VBox prefWidth="100.0">
+                     <children>
+                        <Label text="UserID:" />
+                          <TextField fx:id="nameTextField" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <Label text="Password:" />
+                        <TextField fx:id="passwordTextField" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" spacing="30.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#RegisterButtonHandler" prefHeight="32.0" prefWidth="65.0" text="Register" />
+                          <Button mnemonicParsing="false" onAction="#LoginButtonHandler" prefHeight="32.0" prefWidth="65.0" text="Login" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
     </children>
 </AnchorPane>

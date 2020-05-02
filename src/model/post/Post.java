@@ -1,6 +1,7 @@
 package model.post;
 
 import javafx.scene.layout.HBox;
+import model.database.PostDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,16 +51,17 @@ public abstract class Post implements Serializable{
 
 	abstract public HBox visualize(String User_ID);
 
-	abstract public boolean handleReply(Reply reply);
+	abstract public void handleReply(Reply reply);
 
-	abstract public String getReplyDetails();
+	abstract public void getReplyDetails();
 
 	public String getImage() {
 		return Image;
 	}
 
-	protected void changeStatus(){
-		this.Status = "CLOSED";
+	protected void closePost(){
+		PostDB postDB = new PostDB();
+		postDB.closePost(Id);
 	}
 
 	public String getTitle() {

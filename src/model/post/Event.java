@@ -1,16 +1,31 @@
 package model.post;
 
+import controller.MoreDetailsController;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import main.UniLinkGUI;
+import model.database.PostDB;
+import model.database.ReplyDB;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Optional;
 
 public class Event extends Post {
 	
@@ -35,9 +50,12 @@ public class Event extends Post {
 	@Override
 	public HBox visualize(String User_ID) {
 		HBox hBox = new HBox();
-		hBox.setStyle("-fx-background-color: lightblue");
+		hBox.setStyle("-fx-background-color: #add8e6");
 		hBox.setSpacing(30);
-		hBox.setAlignment(Pos.CENTER);
+		hBox.prefHeight(300);
+		hBox.prefWidth(1000);
+		hBox.setPadding(new Insets(10,10,10,10));
+		hBox.setAlignment(Pos.CENTER_LEFT);
 		StringBuilder ImageURL = new StringBuilder("./images/");
 		ImageURL.append(super.getImage());
 		ImageView imageView = null;
@@ -52,137 +70,190 @@ public class Event extends Post {
 			}
 		} finally {
 			hBox.getChildren().add(imageView);
+			HBox.setHgrow(imageView, Priority.ALWAYS);
 		}
+
 		GridPane postDetails = new GridPane();
+		postDetails.setPrefWidth(500);
 		postDetails.setHgap(20);
 		postDetails.setVgap(10);
-		postDetails.setAlignment(Pos.CENTER);
+		postDetails.setAlignment(Pos.CENTER_LEFT);
+
+		ColumnConstraints c1 = new ColumnConstraints();
+		c1.setPercentWidth(25);
+		ColumnConstraints c2 = new ColumnConstraints();
+		c2.setPercentWidth(25);
+		ColumnConstraints c3 = new ColumnConstraints();
+		c3.setPercentWidth(25);
+		ColumnConstraints c4 = new ColumnConstraints();
+		c4.setPercentWidth(25);
+		postDetails.getColumnConstraints().addAll(c1, c2, c3, c4);
 
 		Label POSTID = new Label("POST ID:");
 		POSTID.setStyle("-fx-font-weight: bold");
 		Label postID = new Label(super.getPostId());
 		postDetails.add(POSTID,0,0);
 		postDetails.add(postID,1,0);
-		postDetails.setHalignment(POSTID, HPos.RIGHT);
-		postDetails.setHalignment(postID,HPos.LEFT);
+		GridPane.setHalignment(POSTID, HPos.RIGHT);
+		GridPane.setHalignment(postID,HPos.LEFT);
 
 		Label TITLE = new Label("TITLE:");
 		TITLE.setStyle("-fx-font-weight: bold");
 		Label title = new Label(super.getTitle());
 		postDetails.add(TITLE,2,0);
 		postDetails.add(title,3,0);
-		postDetails.setHalignment(TITLE, HPos.RIGHT);
-		postDetails.setHalignment(title,HPos.LEFT);
+		GridPane.setHalignment(TITLE, HPos.RIGHT);
+		GridPane.setHalignment(title,HPos.LEFT);
 
 		Label DESCRIPTION = new Label ("DESCRIPTION:");
 		DESCRIPTION.setStyle("-fx-font-weight: bold");
 		Label description = new Label(super.getDescription());
 		postDetails.add(DESCRIPTION,2,2);
 		postDetails.add(description,3,2);
-		postDetails.setHalignment(DESCRIPTION, HPos.RIGHT);
-		postDetails.setHalignment(description,HPos.LEFT);
+		GridPane.setHalignment(DESCRIPTION, HPos.RIGHT);
+		GridPane.setHalignment(description,HPos.LEFT);
 
 		Label CREATORID = new Label("CREATOR ID:");
 		CREATORID.setStyle("-fx-font-weight: bold");
 		Label creatorID = new Label(super.getCreatorId());
 		postDetails.add(CREATORID,0,1);
 		postDetails.add(creatorID,1,1);
-		postDetails.setHalignment(CREATORID, HPos.RIGHT);
-		postDetails.setHalignment(creatorID,HPos.LEFT);
+		GridPane.setHalignment(CREATORID, HPos.RIGHT);
+		GridPane.setHalignment(creatorID,HPos.LEFT);
 
 		Label STATUS = new Label("STATUS:");
 		STATUS.setStyle("-fx-font-weight: bold");
 		Label status = new Label(super.getStatus());
 		postDetails.add(STATUS,0,2);
 		postDetails.add(status,1,2);
-		postDetails.setHalignment(STATUS, HPos.RIGHT);
-		postDetails.setHalignment(status,HPos.LEFT);
+		GridPane.setHalignment(STATUS, HPos.RIGHT);
+		GridPane.setHalignment(status,HPos.LEFT);
 
 		Label VENUE = new Label("VENUE:");
 		VENUE.setStyle("-fx-font-weight: bold");
 		Label venue = new Label(this.Venue);
 		postDetails.add(VENUE,2,4);
 		postDetails.add(venue,3,4);
-		postDetails.setHalignment(VENUE, HPos.RIGHT);
-		postDetails.setHalignment(venue,HPos.LEFT);
+		GridPane.setHalignment(VENUE, HPos.RIGHT);
+		GridPane.setHalignment(venue,HPos.LEFT);
 
-		Label DATE = new Label("DATE");
+		Label DATE = new Label("DATE:");
 		DATE.setStyle("-fx-font-weight: bold");
 		Label date = new Label(this.Date);
 		postDetails.add(DATE,0,3);
 		postDetails.add(date,1,3);
-		postDetails.setHalignment(DATE, HPos.RIGHT);
-		postDetails.setHalignment(date,HPos.LEFT);
+		GridPane.setHalignment(DATE, HPos.RIGHT);
+		GridPane.setHalignment(date,HPos.LEFT);
 
 		Label CAPACITY = new Label("CAPACITY:");
 		CAPACITY.setStyle("-fx-font-weight: bold");
 		Label capacity = new Label(Integer.toString(this.Capacity));
 		postDetails.add(CAPACITY,0,4);
 		postDetails.add(capacity,1,4);
-		postDetails.setHalignment(CAPACITY, HPos.RIGHT);
-		postDetails.setHalignment(capacity,HPos.LEFT);
+		GridPane.setHalignment(CAPACITY, HPos.RIGHT);
+		GridPane.setHalignment(capacity,HPos.LEFT);
 
 		Label ATTENDEE_COUNT = new Label("ATTENDEE COUNT:");
 		ATTENDEE_COUNT.setStyle("-fx-font-weight: bold");
 		Label attendee_Count = new Label(Integer.toString(this.AttendeesCount));
 		postDetails.add(ATTENDEE_COUNT,0,5);
 		postDetails.add(attendee_Count,1,5);
-		postDetails.setHalignment(ATTENDEE_COUNT, HPos.RIGHT);
-		postDetails.setHalignment(attendee_Count,HPos.LEFT);
+		GridPane.setHalignment(ATTENDEE_COUNT, HPos.RIGHT);
+		GridPane.setHalignment(attendee_Count,HPos.LEFT);
 
 		hBox.getChildren().add(postDetails);
-		if(User_ID.compareToIgnoreCase(super.getCreatorId())!=0){
+		HBox.setHgrow(postDetails, Priority.ALWAYS);
+
+		if(User_ID.compareToIgnoreCase(super.getCreatorId())!=0 && super.getStatus().compareToIgnoreCase("OPEN")==0){
 			Button reply = new Button("REPLY");
+			reply.setPrefWidth(120);
+			final String[] input = new String[3];
+			input[0] = super.getPostId();
+			input[1] = User_ID;
 			reply.setOnAction(actionEvent -> {
+				TextInputDialog textInputDialog = new TextInputDialog();
+				textInputDialog.setTitle("REPLY TO EVENT");
+				textInputDialog.setHeaderText(null);
+				textInputDialog.setContentText("ENTER 1 TO JOIN:");
+				Optional<String> result = textInputDialog.showAndWait();
+				result.ifPresent(value -> {
+					input[2] = value;
+					try {
+						if (Integer.parseInt(input[2]) == 1)
+							this.handleReply(new Reply(input[0],input[1],Integer.parseInt(input[2])));
+					}catch (NumberFormatException ex){
+						Alert alert = new Alert(Alert.AlertType.ERROR,"Input does not meet the format");
+						alert.showAndWait();
+					}
+				});
 
 			});
 			hBox.getChildren().add(reply);
+			HBox.setHgrow(reply, Priority.ALWAYS);
 		}
 
 		if(User_ID.compareToIgnoreCase(super.getCreatorId())==0) {
 			Button moredetails = new Button("MORE DETAILS");
+			moredetails.setPrefWidth(120);
 			moredetails.setOnAction(actionEvent -> {
-
+				this.getReplyDetails();
 			});
 			hBox.getChildren().add(moredetails);
+			HBox.setHgrow(moredetails, Priority.ALWAYS);
 		}
 		return hBox;
 	}
 
 	@Override
-	public boolean handleReply(Reply reply) {
-		// the reply is valid, the event is not full and the student id is not yet recorded in that event
-		if(AttendeesCount < Capacity && (int)reply.getValue() == 1) {
-			for(Reply r: super.getReply()) {
-				// already join the event
-				if(r.getResponderId().compareTo(reply.getResponderId())==0) {
-					System.out.println("Already joined the Event");
-					return false;
+	public void handleReply(Reply reply) {
+		ReplyDB replyDB = new ReplyDB();
+		if(replyDB.checkExist(reply))
+			if(replyDB.checkEvent(reply)!=null){
+				int capacity = replyDB.checkEvent(reply)[0];
+				int attendees = replyDB.checkEvent(reply)[1];
+				if(capacity>attendees) {
+					replyDB.join(reply);
+					PostDB postDB= new PostDB();
+					postDB.update(this,reply);
+					attendees++;
+					if(attendees==capacity){
+						closePost();
+					}
 				}
 			}
-			// successfully join the event
-			super.getReply().add(reply);
-			AttendeesCount ++;
-			System.out.println("Event registration accepted!");
-			if(AttendeesCount == Capacity)
-//				super.changeStatus();
-			return true;
-		}
-		return false;
 	}
 
 	@Override
-	public String getReplyDetails() {
-		StringBuilder details = new StringBuilder("Attendee list: ");
-		if(AttendeesCount == 0)
-			details.append("Empty");
-		else
-			for(Reply r: super.getReply()) {
-				details.append(r.getResponderId());
-				if(r != super.getReply().get(super.getReply().size()-1))
-					details.append(",");
-			}
-		return details.toString();
+	public void getReplyDetails() {
+		ReplyDB replyDB = new ReplyDB();
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MoreDetails.fxml"));
+		Parent main_Root = null;
+		try {
+			main_Root = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		MoreDetailsController controller = loader.getController();
+		controller.setUp(this,"Attendees List:",replyDB.checkExist(super.getPostId()));
+		assert main_Root != null;
+		Scene main_Scene = new Scene(main_Root);
+		Stage stage = new Stage();
+		stage.setTitle("MORE DETAILS FOR THE POST");
+		stage.setScene(main_Scene);
+		stage.show();
+		UniLinkGUI.stages.put("MOREDETAILS",stage);
+		UniLinkGUI.controllers.put("MOREDETAILS",controller);
+		UniLinkGUI.stages.get("MAIN").hide();
+
+//		StringBuilder details = new StringBuilder("Attendee list: ");
+//		if(AttendeesCount == 0)
+//			details.append("Empty");
+//		else
+//			for(Reply r: super.getReply()) {
+//				details.append(r.getResponderId());
+//				if(r != super.getReply().get(super.getReply().size()-1))
+//					details.append(",");
+//			}
 	}
 
 	public String getVenue() {

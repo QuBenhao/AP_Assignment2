@@ -16,13 +16,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class LoginWindowController implements Switchable{
-    private UserRequest userRequest = new UserRequest();
-    private Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
+    private final UserRequest userRequest = new UserRequest();
+    private final Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
 
     @FXML private TextField nameTextField;
     @FXML private TextField passwordTextField;
 
     @FXML private void initialize(){
+
     }
 
     private void reset(){
@@ -46,7 +47,7 @@ public class LoginWindowController implements Switchable{
             emptyIDError.showAndWait();
         }
         else {
-            String input[] = new String[3];
+            String[] input = new String[3];
             input[0] = nameTextField.getText();
             input[2] = passwordTextField.getText();
             TextInputDialog nameInput = new TextInputDialog("Default");
@@ -56,10 +57,10 @@ public class LoginWindowController implements Switchable{
             Optional<String> result = nameInput.showAndWait();
             result.ifPresent(name -> {
                 input[1] = name;
+                if (userRequest.Register(input)) {
+                    switchStage();
+                }
             });
-            if (userRequest.Register(input)){
-                switchStage();
-            }
         }
     }
 
@@ -72,8 +73,9 @@ public class LoginWindowController implements Switchable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainWindowController controller = (MainWindowController) loader.getController();
+        MainWindowController controller = loader.getController();
         controller.SetUserID(nameTextField.getText());
+        assert main_Root != null;
         Scene main_Scene = new Scene(main_Root,1200,800);
         Stage stage = new Stage();
         stage.setTitle("Main Window");

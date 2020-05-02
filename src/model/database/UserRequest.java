@@ -48,8 +48,7 @@ public class UserRequest {
             Alert alert = new Alert(Alert.AlertType.ERROR,throwables.toString());
             alert.showAndWait();
         } catch (UserNotExistException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR,ex.getMessage());
-            alert.showAndWait();
+            ex.display();
         }
         return false;
     }

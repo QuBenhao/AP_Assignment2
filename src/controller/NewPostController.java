@@ -23,7 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-public class NewPostController {
+public class NewPostController implements Switchable{
 
     @FXML private ImageView PostImage;
     @FXML private GridPane PostInput;
@@ -37,6 +37,7 @@ public class NewPostController {
         this.type = type;
         this.User_ID = User_ID;
         PostInput.setVgap(15);
+        PostInput.setHgap(30);
 
         if(type.compareToIgnoreCase("EVENT")==0) {
             Label TITLE = new Label("TITLE:");
@@ -48,25 +49,25 @@ public class NewPostController {
             Label DESCRIPTION = new Label("DESCRIPTION:");
             TextField description = new TextField();
             description.setId("description");
-            PostInput.add(DESCRIPTION, 0, 2);
-            PostInput.add(description, 0, 3);
+            PostInput.add(DESCRIPTION, 1, 0);
+            PostInput.add(description, 1, 1);
 
             Label VENUE = new Label("VENUE:");
             TextField venue = new TextField();
             venue.setId("venue");
-            PostInput.add(VENUE, 0, 4);
-            PostInput.add(venue, 0, 5);
+            PostInput.add(VENUE, 0, 2);
+            PostInput.add(venue, 0, 3);
 
             Label DATE = new Label("DATE:");
             DatePicker date = new DatePicker();
-            PostInput.add(DATE, 0, 6);
-            PostInput.add(date, 0, 7);
+            PostInput.add(DATE, 1, 2);
+            PostInput.add(date, 1, 3);
 
             Label CAPACITY = new Label("CAPACITY:");
             TextField capacity = new TextField();
             capacity.setId("capacity");
-            PostInput.add(CAPACITY, 0, 8);
-            PostInput.add(capacity, 0, 9);
+            PostInput.add(CAPACITY, 0, 4);
+            PostInput.add(capacity, 0, 5);
         }else if(type.compareToIgnoreCase("SALE")==0) {
             Label TITLE = new Label("TITLE:");
             TextField title = new TextField();
@@ -77,20 +78,20 @@ public class NewPostController {
             Label DESCRIPTION = new Label("DESCRIPTION:");
             TextField description = new TextField();
             description.setId("description");
-            PostInput.add(DESCRIPTION, 0, 2);
-            PostInput.add(description, 0, 3);
+            PostInput.add(DESCRIPTION, 1, 0);
+            PostInput.add(description, 1, 1);
 
             Label ASKINGPRICE = new Label("ASKING PRICE:");
             TextField askingprice = new TextField();
             askingprice.setId("askingprice");
-            PostInput.add(ASKINGPRICE, 0, 4);
-            PostInput.add(askingprice, 0, 5);
+            PostInput.add(ASKINGPRICE, 0, 2);
+            PostInput.add(askingprice, 0, 3);
 
             Label MINIMUMRAISE = new Label("MINIMUM RAISE:");
             TextField minimumraise = new TextField();
             minimumraise.setId("minimumraise");
-            PostInput.add(MINIMUMRAISE, 0, 6);
-            PostInput.add(minimumraise, 0, 7);
+            PostInput.add(MINIMUMRAISE, 1, 2);
+            PostInput.add(minimumraise, 1, 3);
         }else if(type.compareToIgnoreCase("JOB")==0) {
             Label TITLE = new Label("TITLE:");
             TextField title = new TextField();
@@ -173,7 +174,7 @@ public class NewPostController {
                         imageName,
                         input.get("venue").toString(),
                         input.get("date").toString(),
-                        Integer.valueOf(input.get("capacity").toString()),
+                        Integer.parseInt(input.get("capacity").toString()),
                         0
                 );
             } else if(type.compareToIgnoreCase("SALE")==0){
@@ -189,8 +190,8 @@ public class NewPostController {
                         "OPEN",
                         User_ID,
                         imageName,
-                        Double.valueOf(input.get("askingprice").toString()),
-                        Double.valueOf(input.get("minimumraise").toString()),
+                        Double.parseDouble(input.get("askingprice").toString()),
+                        Double.parseDouble(input.get("minimumraise").toString()),
                         0
                 );
             } else if(type.compareToIgnoreCase("JOB")==0){
@@ -204,18 +205,31 @@ public class NewPostController {
                         "OPEN",
                         User_ID,
                         imageName,
-                        Double.valueOf(input.get("proposedprice").toString()),
+                        Double.parseDouble(input.get("proposedprice").toString()),
                         0
                 );
             }
             postDB.newPost(post);
+            switchStage();
         }catch (NumberFormatException numberFormatException){
             Alert alert = new Alert(Alert.AlertType.ERROR,String.format("Input with wrong Type!%s",numberFormatException.getMessage()));
             alert.showAndWait();
         } catch (Exception ex){
-            ex.printStackTrace();
-//            Alert alert = new Alert(Alert.AlertType.ERROR,"Cannot sumbit when some textfields are left blank");
-//            alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR,"Cannot sumbit when some textfields are left blank");
+            alert.showAndWait();
         }
+    }
+
+    public void BackToMainWindow(ActionEvent actionEvent) {
+        switchStage();
+    }
+
+    @Override
+    public void switchStage() {
+        ((MainWindowController)UniLinkGUI.controllers.get("MAIN")).UpdateView();
+        UniLinkGUI.stages.get("MAIN").show();
+        UniLinkGUI.stages.get(type.toUpperCase()).close();
+        UniLinkGUI.stages.remove(type.toUpperCase());
+        UniLinkGUI.controllers.remove(type.toUpperCase());
     }
 }

@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainWindowController implements Switchable{
-    String selectType[] = {"ALL","EVENT","SALE","JOB"};
-    String selectStatus[] = {"ALL","OPEN","CLOSED"};
-    String selectCreator[] = {"ALL","MY POST"};
+    String[] selectType = {"ALL","EVENT","SALE","JOB"};
+    String[] selectStatus = {"ALL","OPEN","CLOSED"};
+    String[] selectCreator = {"ALL","MY POST"};
 
     @FXML private Label User_ID;
     @FXML private ComboBox Type;
@@ -97,7 +97,7 @@ public class MainWindowController implements Switchable{
         switchStage("JOB");
     }
 
-    private void UpdateView(){
+    public void UpdateView(){
         postView = FXCollections.observableArrayList();
         getPosts();
         mainContent.refresh();
@@ -124,9 +124,10 @@ public class MainWindowController implements Switchable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        NewPostController controller = (NewPostController) loader.getController();
+        NewPostController controller = loader.getController();
         controller.setUp(type,User_ID.getText());
-        Scene main_Scene = new Scene(main_Root,1200,800);
+        assert main_Root != null;
+        Scene main_Scene = new Scene(main_Root);
         Stage stage = new Stage();
         stage.setTitle("New Post");
         stage.setScene(main_Scene);
