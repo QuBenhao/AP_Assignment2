@@ -41,7 +41,7 @@ public class Sale extends Post {
 	@Override
 	public HBox visualize(String User_ID) {
 		HBox hBox = super.visualize(User_ID);
-		hBox.setStyle("-fx-background-color: lightskyblue");
+		hBox.setStyle("-fx-background-color: #87cefa");
 		GridPane postDetails = null;
 		Button reply = null;
 		for (Node node: hBox.getChildren()){
@@ -126,7 +126,7 @@ public class Sale extends Post {
 	@Override
 	public void getReplyDetails() {
 		ReplyDB replyDB = new ReplyDB();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MoreDetails.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MORE_DETAILS_WINDOW));
 		Parent main_Root = null;
 		try {
 			main_Root = loader.load();

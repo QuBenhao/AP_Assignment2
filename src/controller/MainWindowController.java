@@ -117,7 +117,7 @@ public class MainWindowController implements Switchable{
     }
 
     public void switchStage(String type){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/NewPost.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.NEW_POST_WINDOW));
         Parent main_Root = null;
         try {
             main_Root = loader.load();

@@ -135,7 +135,7 @@ public class Event extends Post {
 	@Override
 	public void getReplyDetails() {
 		ReplyDB replyDB = new ReplyDB();
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MoreDetails.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MORE_DETAILS_WINDOW));
 		Parent main_Root = null;
 		try {
 			main_Root = loader.load();

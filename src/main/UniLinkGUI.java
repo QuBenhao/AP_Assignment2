@@ -19,6 +19,8 @@ public class UniLinkGUI extends Application{
     public static HashMap<String,Object> controllers = new HashMap<>();
     public static final String LOGIN_WINDOW = "/view/LoginWindow.fxml";
     public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
+    public static final String MORE_DETAILS_WINDOW = "/view/MoreDetails.fxml";
+    public static final String NEW_POST_WINDOW = "/view/NewPost.fxml";
 
     public static void main(String[] args) {
         try {

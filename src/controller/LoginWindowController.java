@@ -66,7 +66,7 @@ public class LoginWindowController implements Switchable{
 
     @Override
     public void switchStage() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MAIN_WINDOW));
         Parent main_Root = null;
         try {
             main_Root = loader.load();
