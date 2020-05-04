@@ -17,7 +17,6 @@ public class ReplyDB {
     private PreparedStatement event = null;
     private PreparedStatement sale = null;
     private PreparedStatement job = null;
-    private PreparedStatement search = null;
 
     public ReplyDB(){
         con = UniLinkGUI.con;
