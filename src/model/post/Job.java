@@ -98,7 +98,7 @@ public class Job extends Post {
 		ReplyDB replyDB = new ReplyDB();
 		if(replyDB.checkExist(reply,true))
 			if(replyDB.checkJob(reply)){
-				replyDB.join(reply);
+				replyDB.join(reply,true);
 			}
 	}
 

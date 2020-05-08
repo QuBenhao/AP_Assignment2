@@ -108,7 +108,7 @@ public class Sale extends Post {
 		ReplyDB replyDB = new ReplyDB();
 		if(replyDB.checkExist(reply,true)) {
 			if(replyDB.checkSale(reply))
-				replyDB.join(reply);
+				replyDB.join(reply,true);
 		}
 	}
 

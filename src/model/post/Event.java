@@ -116,7 +116,7 @@ public class Event extends Post {
 	public void handleReply(Reply reply) {
 		ReplyDB replyDB = new ReplyDB();
 		if(replyDB.checkExist(reply,true))
-			replyDB.join(reply);
+			replyDB.join(reply,true);
 	}
 
 	@Override

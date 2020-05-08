@@ -137,15 +137,17 @@ public class ReplyDB {
         return false;
     }
 
-    public void join(Reply reply) {
+    public void join(Reply reply,boolean info) {
         try{
             PreparedStatement insert = con.prepareStatement("INSERT INTO REPLY VALUES (?,?,?)");
             insert.setString(1,reply.getPostId());
             insert.setString(2,reply.getResponderId());
             insert.setDouble(3,reply.getValue());
             insert.executeUpdate();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION,"Reply successfully");
-            alert.showAndWait();
+            if(info) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Reply successfully");
+                alert.showAndWait();
+            }
             if(reply.getPostId().substring(0,3).compareToIgnoreCase("EVE")==0)
                 this.closeEvent(reply);
             ((MainWindowController)UniLinkGUI.controllers.get("MAIN")).UpdateView();

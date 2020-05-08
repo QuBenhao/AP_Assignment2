@@ -317,7 +317,7 @@ public class PostDB {
                         this.newPost(k);
                     for(Reply r:v) {
                         if(replyDB.checkExist(r,false))
-                            replyDB.join(r);
+                            replyDB.join(r,false);
                     }
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
