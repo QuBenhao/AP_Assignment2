@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MoreDetailsController">
+<AnchorPane stylesheets="@focuscolor.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MoreDetailsController">
    <children>
-      <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
+      <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ToolBar>
               <items>

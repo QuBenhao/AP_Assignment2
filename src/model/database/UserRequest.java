@@ -2,6 +2,7 @@ package model.database;
 
 import javafx.scene.control.Alert;
 import main.UniLinkGUI;
+import model.exception.InputFormatException;
 import model.exception.UserNotExistException;
 
 import java.sql.*;
@@ -34,10 +35,9 @@ public class UserRequest {
         }
     }
 
-    public boolean Login(String USER_ID,String password){
+    public boolean Login(String USER_ID,String password) throws InputFormatException {
         try {
-            if(!ID_Check(USER_ID))
-                return false;
+            ID_Check(USER_ID);
             search.setString(1,USER_ID);
             search.setString(2,password);
             result = search.executeQuery();
@@ -53,11 +53,9 @@ public class UserRequest {
         return false;
     }
 
-    public boolean Register(String[] input){
+    public boolean Register(String[] input) throws InputFormatException {
         try {
-            if(!ID_Check(input[0])){
-                return false;
-            }
+            ID_Check(input[0]);
             for(int i = 0 ; i < input.length; i++){
                 insert.setString(i+1,input[i]);
             }
@@ -75,26 +73,18 @@ public class UserRequest {
         return false;
     }
 
-    private boolean ID_Check(String ID){
-        if(ID.length()!=8){
-            Alert alert = new Alert(Alert.AlertType.ERROR,"The length of User_ID should be 8");
-            alert.showAndWait();
-            return false;
+    private void ID_Check(String ID) throws InputFormatException {
+        if (ID.length() != 8) {
+            throw new InputFormatException("The length of User_ID should be 8");
         }
-        if(ID.charAt(0)!='s'){
-            if(ID.charAt(0)!='S') {
-                Alert alert = new Alert(Alert.AlertType.ERROR,"User_ID should start with letter S");
-                alert.showAndWait();
-                return false;
-            }
+        if (ID.charAt(0) != 's') {
+            if (ID.charAt(0) != 'S')
+                throw new InputFormatException("User_ID should start with the letter S");
         }
-        try{
+        try {
             Integer.parseInt(ID.substring(1));
-        }catch (Exception ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR,"User_ID should have all numbers startign with S");
-            alert.showAndWait();
-            return false;
+        } catch (NumberFormatException ex) {
+            throw new InputFormatException("User_ID should have all numbers starting with S");
         }
-        return true;
     }
 }

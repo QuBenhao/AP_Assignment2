@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
-import model.database.PostDB;
 import model.database.ReplyDB;
 
 import java.io.IOException;
@@ -60,6 +59,8 @@ public class Job extends Post {
 		Label LOWESTOFFER = new Label("LOWEST OFFER:");
 		LOWESTOFFER.setStyle("-fx-font-weight: bold");
 		Label lowest_offer = new Label(String.format("%.2f",this.LowestOffer));
+		if(this.LowestOffer==0)
+			lowest_offer.setText("NULL");
 		postDetails.add(LOWESTOFFER,0,4);
 		postDetails.add(lowest_offer,1,4);
 		GridPane.setHalignment(LOWESTOFFER,HPos.RIGHT);
@@ -95,14 +96,9 @@ public class Job extends Post {
 	@Override
 	public void handleReply(Reply reply) {
 		ReplyDB replyDB = new ReplyDB();
-		if(replyDB.checkExist(reply))
-			if(replyDB.checkJob(reply)!=-1){
-				double lowestPrice = replyDB.checkJob(reply);
-				if(reply.getValue()<lowestPrice){
-					replyDB.join(reply);
-					PostDB postDB = new PostDB();
-					postDB.update(this,reply);
-				}
+		if(replyDB.checkExist(reply,true))
+			if(replyDB.checkJob(reply)){
+				replyDB.join(reply);
 			}
 	}
 
@@ -120,7 +116,7 @@ public class Job extends Post {
 		controller.setUp(this,"-- Offer History --",replyDB.checkExist(super.getPostId()));
 
 		assert main_Root != null;
-		Scene main_Scene = new Scene(main_Root,1200,800);
+		Scene main_Scene = new Scene(main_Root);
 		Stage stage = new Stage();
 		stage.setTitle("MORE DETAILS FOR JOB POST");
 		stage.setScene(main_Scene);

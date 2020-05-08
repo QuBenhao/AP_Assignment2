@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
-import model.database.PostDB;
 import model.database.ReplyDB;
 
 import java.io.IOException;
@@ -54,6 +53,8 @@ public class Sale extends Post {
 		Label HIGHESTOFFER = new Label("HIGHEST OFFER:");
 		HIGHESTOFFER.setStyle("-fx-font-weight: bold");
 		Label highestOffer = new Label(String.format("%.2f",this.HighestOffer));
+		if(this.HighestOffer==0)
+			highestOffer.setText("NULL");
 		postDetails.add(HIGHESTOFFER,0,3);
 		postDetails.add(highestOffer,1,3);
 		GridPane.setHalignment(HIGHESTOFFER, HPos.RIGHT);
@@ -105,22 +106,10 @@ public class Sale extends Post {
 	@Override
 	public void handleReply(Reply reply) {
 		ReplyDB replyDB = new ReplyDB();
-		if(replyDB.checkExist(reply))
-			if(replyDB.checkSale(reply)!=null){
-				double askingPrice = replyDB.checkSale(reply)[0];
-				double minimumRaise = replyDB.checkSale(reply)[1];
-				double highestOffer = replyDB.checkSale(reply)[2];
-				for(int i =0;i<=2;i++)
-					System.out.println(replyDB.checkSale(reply)[i]);
-				if(reply.getValue()>=highestOffer+minimumRaise){
-					replyDB.join(reply);
-					PostDB postDB = new PostDB();
-					postDB.update(this,reply);
-					if(reply.getValue()>=askingPrice) {
-						closePost();
-					}
-				}
-			}
+		if(replyDB.checkExist(reply,true)) {
+			if(replyDB.checkSale(reply))
+				replyDB.join(reply);
+		}
 	}
 
 	@Override
@@ -137,7 +126,7 @@ public class Sale extends Post {
 		controller.setUp(this,"-- Offer History --",replyDB.checkExist(super.getPostId()));
 
 		assert main_Root != null;
-		Scene main_Scene = new Scene(main_Root,1200,800);
+		Scene main_Scene = new Scene(main_Root);
 		Stage stage = new Stage();
 		stage.setTitle("MORE DETAILS FOR SALE POST");
 		stage.setScene(main_Scene);

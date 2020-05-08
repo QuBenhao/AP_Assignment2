@@ -11,6 +11,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import main.UniLinkGUI;
 import model.database.PostDB;
 
 import java.io.FileInputStream;
@@ -64,8 +65,7 @@ public abstract class Post implements Serializable{
 	public HBox visualize(String User_ID){
 		HBox hBox = new HBox();
 		hBox.setSpacing(30);
-		hBox.prefHeight(300);
-		hBox.prefWidth(1000);
+		hBox.setPrefHeight(200);
 		hBox.setPadding(new Insets(10,10,10,10));
 		hBox.setAlignment(Pos.CENTER_LEFT);
 		StringBuilder ImageURL = new StringBuilder("./images/");
@@ -77,28 +77,30 @@ public abstract class Post implements Serializable{
 			imageView = new ImageView(new Image(input));
 		} catch (FileNotFoundException e) {
 			try {
-				imageView = new ImageView(new Image(new FileInputStream("./images/test.png")));
+				imageView = new ImageView(new Image(new FileInputStream(String.format("./images/%s", UniLinkGUI.Default_ImageName))));
 			} catch (FileNotFoundException fileNotFoundException) {
 			}
 		} finally {
+			imageView.setFitHeight(200);
+			imageView.setFitWidth(200);
 			hBox.getChildren().add(imageView);
 			HBox.setHgrow(imageView, Priority.ALWAYS);
 		}
 
 		GridPane postDetails = new GridPane();
 		postDetails.setPrefWidth(500);
-		postDetails.setHgap(20);
-		postDetails.setVgap(10);
+		postDetails.setHgap(15);
+		postDetails.setVgap(15);
 		postDetails.setAlignment(Pos.CENTER_LEFT);
 
 		ColumnConstraints c1 = new ColumnConstraints();
-		c1.setPercentWidth(25);
+		c1.setPercentWidth(30);
 		ColumnConstraints c2 = new ColumnConstraints();
-		c2.setPercentWidth(25);
+		c2.setPercentWidth(20);
 		ColumnConstraints c3 = new ColumnConstraints();
-		c3.setPercentWidth(25);
+		c3.setPercentWidth(20);
 		ColumnConstraints c4 = new ColumnConstraints();
-		c4.setPercentWidth(25);
+		c4.setPercentWidth(30);
 		postDetails.getColumnConstraints().addAll(c1, c2, c3, c4);
 
 		Label POSTID = new Label("POST ID:");
@@ -145,12 +147,16 @@ public abstract class Post implements Serializable{
 
 		HBox.setHgrow(postDetails, Priority.ALWAYS);
 
-		if(User_ID.compareToIgnoreCase(this.CreatorId)!=0 && this.Status.compareToIgnoreCase("OPEN")==0){
+		if(User_ID.compareToIgnoreCase(this.CreatorId)!=0){
 			Button reply = new Button("REPLY");
 			reply.setPrefWidth(120);
 			reply.setId("REPLY");
 			hBox.getChildren().add(reply);
 			HBox.setHgrow(reply, Priority.ALWAYS);
+			if(this.Status.compareToIgnoreCase("CLOSED")==0) {
+				reply.setVisible(false);
+				reply.setDisable(true);
+			}
 		}
 
 		if(User_ID.compareToIgnoreCase(this.CreatorId)==0) {

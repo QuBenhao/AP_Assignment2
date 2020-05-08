@@ -131,8 +131,7 @@ public class NewPostController implements Switchable{
             }
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Invalid file");
-            alert.showAndWait();
+            imageName = UniLinkGUI.Default_ImageName;
         }
     }
 

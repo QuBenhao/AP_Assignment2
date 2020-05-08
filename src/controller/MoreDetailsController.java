@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import main.UniLinkGUI;
 import model.database.PostDB;
+import model.exception.InputFormatException;
 import model.post.*;
 
 import java.io.File;
@@ -47,6 +48,8 @@ public class MoreDetailsController implements Switchable{
         this.post = post;
         HBox postDetails = post.visualize(post.getCreatorId());
         for(Node node: postDetails.getChildren()){
+            if(node instanceof GridPane)
+                ((GridPane) node).setPrefWidth(600);
             if(node instanceof Button){
                 node.setVisible(false);
                 node.setDisable(true);
@@ -68,7 +71,7 @@ public class MoreDetailsController implements Switchable{
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
-                                            temp.setId(((Label) LABEL).getText());
+                                            temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
                                     changes.put(temp.getId(),newvalue);
@@ -114,7 +117,7 @@ public class MoreDetailsController implements Switchable{
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
-                                            temp.setId(((Label) LABEL).getText());
+                                            temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
                                     changes.put(temp.getId(),newvalue);
@@ -146,7 +149,7 @@ public class MoreDetailsController implements Switchable{
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
-                                            temp.setId(((Label) LABEL).getText());
+                                            temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
                                     changes.put(temp.getId(),newvalue);
@@ -189,9 +192,9 @@ public class MoreDetailsController implements Switchable{
             CloseButton.setDisable(true);
         }
         PostDetails.getChildren().add(postDetails);
-        ObservableList<Node> Collection = FXCollections.observableArrayList(PostDetails.getChildren());
-        Collections.swap(Collection, 0, 1);
-        PostDetails.getChildren().setAll(Collection);
+        ObservableList<Node> collection = FXCollections.observableArrayList(PostDetails.getChildren());
+        Collections.swap(collection, 0, 1);
+        PostDetails.getChildren().setAll(collection);
         ReplyDetails.setItems(replyView);
     }
 
@@ -228,8 +231,8 @@ public class MoreDetailsController implements Switchable{
         if (result.get() == ButtonType.OK) {
             PostDB postDB = new PostDB();
             postDB.closePost(post.getPostId());
+            switchStage();
         }
-        switchStage();
     }
 
     @FXML
@@ -243,27 +246,32 @@ public class MoreDetailsController implements Switchable{
         if (result.get() == ButtonType.OK) {
             PostDB postDB = new PostDB();
             postDB.deletePost(post.getPostId());
+            switchStage();
         }
-        switchStage();
     }
 
     @FXML
     public void Save(ActionEvent actionEvent) {
         try{
-            for(Node parent: PostDetails.getChildren()){
-                if(parent instanceof GridPane) {
-                    for(Node node: ((GridPane) parent).getChildren()) {
-                        if (node instanceof TextField) {
-                            if (((TextField) node).getText().isEmpty())
-                                throw new Exception();
-                            if (node.getId().compareTo("capacity") == 0)
-                                Integer.valueOf(((TextField) node).getText());
-                            else if (node.getId().compareTo("askingprice") == 0)
-                                Double.valueOf(((TextField) node).getText());
-                            else if (node.getId().compareTo("minimumraise") == 0)
-                                Double.valueOf(((TextField) node).getText());
-                            else if (node.getId().compareTo("proposedprice") == 0)
-                                Double.valueOf(((TextField) node).getText());
+            for(Node root: PostDetails.getChildren()){
+                if(root instanceof HBox) {
+                    for(Node parent: ((HBox) root).getChildren()) {
+                        if (parent instanceof GridPane) {
+                            for (Node node : ((GridPane) parent).getChildren()) {
+                                if (node instanceof TextField) {
+                                    if (((TextField) node).getText().isEmpty())
+                                        throw new Exception();
+                                    if (node.getId().compareToIgnoreCase("capacity:") == 0)
+                                        Integer.valueOf(((TextField) node).getText());
+                                    else if (node.getId().compareToIgnoreCase("asking price:") == 0)
+                                        Double.valueOf(((TextField) node).getText());
+                                    else if (node.getId().compareToIgnoreCase("minimum raise:") == 0)
+                                        Double.valueOf(((TextField) node).getText());
+                                    else if (node.getId().compareToIgnoreCase("proposed price:") == 0) {
+                                        Double.valueOf(((TextField) node).getText());
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -272,11 +280,17 @@ public class MoreDetailsController implements Switchable{
             postDB.updatePost(post.getPostId(),changes);
             switchStage();
         }catch (NumberFormatException ex){
-            Alert alert = new Alert(Alert.AlertType.ERROR,String.format("Input with wrong Type!%s",ex.getMessage()));
-            alert.showAndWait();
+            try{
+                throw new InputFormatException(String.format("Input with wrong Type!%s",ex.getMessage()));
+            } catch (InputFormatException e){
+                e.display();
+            }
         }catch (Exception e){
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Cannot save when some textfields are left blank");
-            alert.showAndWait();
+            try{
+                throw new InputFormatException("Cannot save when some textfields are left blank");
+            } catch (InputFormatException ex){
+                ex.display();
+            }
         }
     }
 

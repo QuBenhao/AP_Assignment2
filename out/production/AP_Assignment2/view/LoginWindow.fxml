@@ -9,16 +9,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginWindowController">
+<AnchorPane stylesheets="@focuscolor.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginWindowController">
     <children>
-      <HBox alignment="CENTER" spacing="100.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" prefHeight="400.0" spacing="50.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="174.0" spacing="30.0" style="-fx-background-color: lightskyblue;">
+            <VBox alignment="TOP_CENTER" spacing="30.0" style="-fx-background-color: lightskyblue;">
                <children>
-                  <Label text="Welcome Back." textFill="WHITE">
+                  <Label prefHeight="23.0" prefWidth="175.0" text="Welcome Back." textFill="WHITE">
                      <font>
                         <Font size="26.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
                   </Label>
                   <Label text="UniLink System" textFill="WHITE">
                      <font>
@@ -56,6 +59,18 @@
                      </children>
                   </HBox>
                </children>
+            </VBox>
+            <VBox alignment="CENTER" spacing="30.0" style="-fx-background-color: lightskyblue;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label prefHeight="23.0" prefWidth="175.0" style="visibility: false;" text="Welcome Back." textFill="WHITE">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>

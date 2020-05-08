@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
-import model.database.PostDB;
 import model.database.ReplyDB;
 
 import java.io.IOException;
@@ -116,20 +115,8 @@ public class Event extends Post {
 	@Override
 	public void handleReply(Reply reply) {
 		ReplyDB replyDB = new ReplyDB();
-		if(replyDB.checkExist(reply))
-			if(replyDB.checkEvent(reply)!=null){
-				int capacity = replyDB.checkEvent(reply)[0];
-				int attendees = replyDB.checkEvent(reply)[1];
-				if(capacity>attendees) {
-					replyDB.join(reply);
-					PostDB postDB= new PostDB();
-					postDB.update(this,reply);
-					attendees++;
-					if(attendees==capacity){
-						closePost();
-					}
-				}
-			}
+		if(replyDB.checkExist(reply,true))
+			replyDB.join(reply);
 	}
 
 	@Override

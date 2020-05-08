@@ -5,19 +5,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
 import model.database.UserRequest;
+import model.exception.InputFormatException;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public class LoginWindowController implements Switchable{
     private final UserRequest userRequest = new UserRequest();
-    private final Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
 
     @FXML private TextField nameTextField;
     @FXML private TextField passwordTextField;
@@ -33,18 +32,28 @@ public class LoginWindowController implements Switchable{
 
     @FXML private void LoginButtonHandler(ActionEvent actionEvent){
         if(nameTextField.getText().equals("")){
-            emptyIDError.showAndWait();
-        }
-        else{
-            if(userRequest.Login(nameTextField.getText(),passwordTextField.getText())) {
-                switchStage();
+            try {
+                throw new InputFormatException("User ID cannot be empty!");
+            } catch (InputFormatException e) {
+                e.display();
             }
         }
+        else
+            try{
+                if(userRequest.Login(nameTextField.getText(),passwordTextField.getText()))
+                    switchStage();
+            }catch (InputFormatException ex) {
+                ex.display();
+            }
     }
 
     @FXML private void RegisterButtonHandler(ActionEvent actionEvent){
         if(nameTextField.getText().equals("")){
-            emptyIDError.showAndWait();
+            try {
+                throw new InputFormatException("User ID cannot be empty!");
+            } catch (InputFormatException e) {
+                e.display();
+            }
         }
         else {
             String[] input = new String[3];
@@ -57,8 +66,11 @@ public class LoginWindowController implements Switchable{
             Optional<String> result = nameInput.showAndWait();
             result.ifPresent(name -> {
                 input[1] = name;
-                if (userRequest.Register(input)) {
-                    switchStage();
+                try {
+                    if (userRequest.Register(input))
+                        switchStage();
+                } catch (InputFormatException e) {
+                    e.display();
                 }
             });
         }
@@ -76,7 +88,7 @@ public class LoginWindowController implements Switchable{
         MainWindowController controller = loader.getController();
         controller.SetUserID(nameTextField.getText());
         assert main_Root != null;
-        Scene main_Scene = new Scene(main_Root,1200,800);
+        Scene main_Scene = new Scene(main_Root);
         Stage stage = new Stage();
         stage.setTitle("Main Window");
         stage.setScene(main_Scene);

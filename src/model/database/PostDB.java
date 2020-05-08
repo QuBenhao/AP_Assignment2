@@ -1,6 +1,5 @@
 package model.database;
 
-import controller.MainWindowController;
 import javafx.scene.control.Alert;
 import main.UniLinkGUI;
 import model.post.*;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PostDB {
-    
+
     private final Connection con;
     private PreparedStatement search = null;
     private PreparedStatement insert = null;
@@ -20,9 +19,9 @@ public class PostDB {
     private PreparedStatement deletePostStatement = null;
     private PreparedStatement deleteReplyStatement = null;
     private PreparedStatement status = null;
-    private PreparedStatement updateEvent = null;
-    private PreparedStatement updateSale = null;
-    private PreparedStatement updateJob = null;
+    private PreparedStatement attendsCountStt = null;
+    private PreparedStatement highestOfferStt = null;
+    private PreparedStatement lowestOfferStt = null;
 
     public PostDB(){
         con = UniLinkGUI.con;
@@ -34,18 +33,39 @@ public class PostDB {
             search = con.prepareStatement("SELECT * FROM POST WHERE POST_ID LIKE ? AND STATUS LIKE ? AND USER_ID LIKE ? GROUP BY POST_ID ORDER BY DATE DESC");
             insert = con.prepareStatement("INSERT INTO POST (POST_ID,TITLE,DESCRIPTION,USER_ID,IMAGE) VALUES(?,?,?,?,?)");
             insertEventStatement = con.prepareStatement("INSERT INTO EVENT (POST_ID,VENUE,DATE,CAPACITY) VALUES(?,?,?,?)");
-            insertSaleStatement = con.prepareStatement("INSERT INTO SALE (POST_ID,ASKING_PRICE,MINIMUM_RAISE,HIGHEST_OFFER) VALUES(?,?,?,null)");
-            insertJobStatement = con.prepareStatement("INSERT INTO JOB (POST_ID,PROPOSED_PRICE,LOWEST_OFFER) VALUES(?,?,null)");
+            insertSaleStatement = con.prepareStatement("INSERT INTO SALE (POST_ID,ASKING_PRICE,MINIMUM_RAISE) VALUES(?,?,?)");
+            insertJobStatement = con.prepareStatement("INSERT INTO JOB (POST_ID,PROPOSED_PRICE) VALUES(?,?)");
             deletePostStatement = con.prepareStatement("DELETE FROM POST WHERE POST_ID = ?");
             deleteReplyStatement = con.prepareStatement("DELETE FROM REPLY WHERE POST_ID = ?");
             status = con.prepareStatement("UPDATE POST SET STATUS = 'CLOSED' WHERE POST_ID = ?");
-            updateEvent = con.prepareStatement("UPDATE EVENT SET ATTENDEES_COUNT = ATTENDEES_COUNT +1 WHERE POST_ID = ?");
-            updateSale = con.prepareStatement("UPDATE SALE SET HIGHEST_OFFER = ? WHERE POST_ID = ?");
-            updateJob = con.prepareStatement("UPDATE JOB SET LOWEST_OFFER = ? WHERE POST_ID = ?");
+            attendsCountStt = con.prepareStatement("SELECT COUNT(REPLY) FROM REPLY WHERE POST_ID = ?");
+            highestOfferStt = con.prepareStatement("SELECT ISNULL(MAX(REPLY),0) FROM REPLY WHERE POST_ID = ?");
+            lowestOfferStt = con.prepareStatement("SELECT ISNULL(MIN(REPLY),0) FROM REPLY WHERE POST_ID = ?");
         } catch (SQLException throwables) {
             Alert alert = new Alert(Alert.AlertType.ERROR,throwables.toString());
             alert.showAndWait();
         }
+    }
+
+    public int getAttendeesCount(String postID) throws SQLException {
+        attendsCountStt.setString(1,postID);
+        ResultSet attend = attendsCountStt.executeQuery();
+        attend.next();
+        return attend.getInt(1);
+    }
+
+    public double getHighestOffer(String postID) throws SQLException{
+        highestOfferStt.setString(1,postID);
+        ResultSet Hoffer = highestOfferStt.executeQuery();
+        Hoffer.next();
+        return Hoffer.getDouble(1);
+    }
+
+    public double getLowestOffer(String postID) throws SQLException{
+        lowestOfferStt.setString(1,postID);
+        ResultSet Loffer = lowestOfferStt.executeQuery();
+        Loffer.next();
+        return Loffer.getDouble(1);
     }
 
     public ArrayList<Post> getPosts(String Type,String Status,String Creator){
@@ -91,13 +111,15 @@ public class PostDB {
                                     resultSet.getString(2),
                                     resultSet.getDate(3).toString(),
                                     resultSet.getInt(4),
-                                    resultSet.getInt(5)));
+                                    this.getAttendeesCount(result.getString(1))));
                         break;
                     case "SAL":
                         searchPost.insert(14,"SALE");
                         postStatement = con.prepareStatement(searchPost.toString());
                         postStatement.setString(1,result.getString(1));
+
                         resultSet = postStatement.executeQuery();
+
                         if(resultSet.next())
                             posts.add(new Sale(result.getString(1),
                                     result.getString(2),
@@ -107,13 +129,15 @@ public class PostDB {
                                     result.getString(7),
                                     resultSet.getDouble(2),
                                     resultSet.getDouble(3),
-                                    resultSet.getDouble(4)));
+                                    this.getHighestOffer(result.getString(1))));
                         break;
                     case "JOB":
                         searchPost.insert(14,"JOB");
                         postStatement = con.prepareStatement(searchPost.toString());
                         postStatement.setString(1,result.getString(1));
+
                         resultSet = postStatement.executeQuery();
+
                         if(resultSet.next())
                             posts.add(new Job(result.getString(1),
                                     result.getString(2),
@@ -122,7 +146,7 @@ public class PostDB {
                                     result.getString(5),
                                     result.getString(7),
                                     resultSet.getDouble(2),
-                                    resultSet.getDouble(3)));
+                                    this.getLowestOffer(result.getString(1))));
                         break;
                     default:
                 }
@@ -223,38 +247,16 @@ public class PostDB {
         }
     }
 
-    public void update(Post post,Reply reply){
-        try {
-            if(post instanceof Event) {
-                updateEvent.setString(1,post.getPostId());
-                updateEvent.executeUpdate();
-            }else if(post instanceof Sale){
-                updateSale.setDouble(1,reply.getValue());
-                updateSale.setString(2,post.getPostId());
-                updateSale.executeUpdate();
-            }else if(post instanceof Job){
-                updateJob.setDouble(1,reply.getValue());
-                updateJob.setString(2,post.getPostId());
-                updateJob.executeUpdate();
-            }
-            ((MainWindowController)UniLinkGUI.controllers.get("MAIN")).UpdateView();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
     public void updatePost(String postID, HashMap<String,String> changes){
         if(changes.isEmpty())
             return;
-        String key;
         try {
             PreparedStatement update ;
-            for(String k:changes.keySet()){
-                key = k.split(":")[0];
+            for(String key:changes.keySet()){
                 StringBuilder stringBuilder = new StringBuilder("UPDATE  SET  = ? WHERE POST_ID = ");
                 stringBuilder.append(String.format("'%s'",postID));
                 stringBuilder.insert(12,key.toUpperCase());
-                if(key.compareToIgnoreCase("TITLE")==0 || key.compareToIgnoreCase("DESCRIPTION")==0)
+                if(key.compareToIgnoreCase("TITLE")==0 || key.compareToIgnoreCase("DESCRIPTION")==0 || key.compareToIgnoreCase("IMAGE")==0)
                     stringBuilder.insert(7,"POST");
                 else if (key.compareToIgnoreCase("VENUE") == 0)
                     stringBuilder.insert(7,"EVENT");
@@ -262,19 +264,19 @@ public class PostDB {
                     stringBuilder.insert(7,"EVENT");
                 else if (key.compareToIgnoreCase("CAPACITY")==0)
                     stringBuilder.insert(7,"EVENT");
-                else if (key.compareToIgnoreCase("ASKINGPRICE")==0 || key.compareToIgnoreCase("MINIMUM_RAISE")==0)
+                else if (key.compareToIgnoreCase("ASKING_PRICE")==0 || key.compareToIgnoreCase("MINIMUM_RAISE")==0)
                     stringBuilder.insert(7,"SALE");
-                else if (key.compareToIgnoreCase("PROPOSEDPRICE")==0)
+                else if (key.compareToIgnoreCase("PROPOSED_PRICE")==0)
                     stringBuilder.insert(7,"JOB");
                 update = con.prepareStatement(stringBuilder.toString());
-                if(key.compareToIgnoreCase("TITLE")==0 || key.compareToIgnoreCase("DESCRIPTION")==0 || (key.compareToIgnoreCase("VENUE") == 0))
-                    update.setString(1,changes.get(k));
+                if(key.compareToIgnoreCase("TITLE")==0 || key.compareToIgnoreCase("DESCRIPTION")==0 || key.compareToIgnoreCase("IMAGE")==0 || key.compareToIgnoreCase("VENUE") == 0)
+                    update.setString(1,changes.get(key));
                 else if (key.compareToIgnoreCase("DATE")==0)
-                    update.setDate(1,Date.valueOf(changes.get(k)));
+                    update.setDate(1,Date.valueOf(changes.get(key)));
                 else if (key.compareToIgnoreCase("CAPACITY")==0)
-                    update.setInt(1,Integer.parseInt(changes.get(k)));
-                else if (key.compareToIgnoreCase("ASKINGPRICE")==0 || key.compareToIgnoreCase("MINIMUM_RAISE")==0 || key.compareToIgnoreCase("PROPOSEDPRICE")==0)
-                    update.setDouble(1,Double.parseDouble(changes.get(k)));
+                    update.setInt(1,Integer.parseInt(changes.get(key)));
+                else if (key.compareToIgnoreCase("ASKING_PRICE")==0 || key.compareToIgnoreCase("MINIMUM_RAISE")==0 || key.compareToIgnoreCase("PROPOSED_PRICE")==0)
+                    update.setDouble(1,Double.parseDouble(changes.get(key)));
                 update.executeUpdate();
             }
         } catch (SQLException throwables) {
@@ -300,6 +302,28 @@ public class PostDB {
             delete.executeUpdate();
             deletePostStatement.executeUpdate();
         }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public void uploadData(HashMap<Post, ArrayList<Reply>> readData) {
+        ReplyDB replyDB = new ReplyDB();
+        try {
+            PreparedStatement check = con.prepareStatement("SELECT * FROM POST WHERE POST_ID = ?");
+            readData.forEach((k,v)->{
+                try {
+                    check.setString(1,k.getPostId());
+                    if(!check.executeQuery().next())
+                        this.newPost(k);
+                    for(Reply r:v) {
+                        if(replyDB.checkExist(r,false))
+                            replyDB.join(r);
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            });
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }

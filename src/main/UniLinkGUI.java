@@ -21,6 +21,7 @@ public class UniLinkGUI extends Application{
     public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
     public static final String MORE_DETAILS_WINDOW = "/view/MoreDetails.fxml";
     public static final String NEW_POST_WINDOW = "/view/NewPost.fxml";
+    public static final String Default_ImageName = "No_image_available.png";
 
     public static void main(String[] args) {
         try {
@@ -42,7 +43,7 @@ public class UniLinkGUI extends Application{
     public void start(Stage stage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(LOGIN_WINDOW));
-            Scene scene = new Scene(root,600,400);
+            Scene scene = new Scene(root);
             stage.setTitle("Login Window");
             stage.setScene(scene);
             stage.show();
