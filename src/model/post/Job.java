@@ -6,7 +6,6 @@ import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -15,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
 import model.database.ReplyDB;
+import model.exception.InputFormatException;
+import model.exception.InvalidOfferPriceException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class Job extends Post {
 
 		Label PROPOSEDPRICE = new Label("PROPOSED PRICE:");
 		PROPOSEDPRICE.setStyle("-fx-font-weight: bold");
-		Label proposed_price = new Label(String.format("%.2f",this.ProposedPrice));
+		Label proposed_price = new Label(String.format("$%.2f",this.ProposedPrice));
 		postDetails.add(PROPOSEDPRICE,0,3);
 		postDetails.add(proposed_price,1,3);
 		GridPane.setHalignment(PROPOSEDPRICE,HPos.RIGHT);
@@ -58,7 +59,7 @@ public class Job extends Post {
 
 		Label LOWESTOFFER = new Label("LOWEST OFFER:");
 		LOWESTOFFER.setStyle("-fx-font-weight: bold");
-		Label lowest_offer = new Label(String.format("%.2f",this.LowestOffer));
+		Label lowest_offer = new Label(String.format("$%.2f",this.LowestOffer));
 		if(this.LowestOffer==0)
 			lowest_offer.setText("NULL");
 		postDetails.add(LOWESTOFFER,0,4);
@@ -80,10 +81,18 @@ public class Job extends Post {
 					input[2] = value;
 					try {
 						Double.parseDouble(input[2]);
-						this.handleReply(new Reply(input[0],input[1],  Double.parseDouble(input[2])));
+						if(Double.parseDouble(input[2])>=0)
+							this.handleReply(new Reply(input[0],input[1],  Double.parseDouble(input[2])));
+						else
+							throw new InvalidOfferPriceException("Cannot accept negative offer");
 					}catch (NumberFormatException ex){
-						Alert alert = new Alert(Alert.AlertType.ERROR,"Input does not meet the format");
-						alert.showAndWait();
+						try{
+							throw new InputFormatException("Please input a number");
+						}catch (InputFormatException e){
+							e.display();
+						}
+					} catch (InvalidOfferPriceException e) {
+						e.display();
 					}
 				});
 

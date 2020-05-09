@@ -197,6 +197,9 @@ public class PostDB {
                     deletePostStatement.executeUpdate();
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Create Post failed");
                     alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, String.format("Create Post success with ID %s",post.getPostId()));
+                    alert.showAndWait();
                 }
             }
         } catch (SQLException throwables) {
@@ -213,7 +216,7 @@ public class PostDB {
                 searchID.setString(1,type+"%");
             }
             else
-                searchID.setString(1, type.substring(0, 3)+"%");
+                searchID.setString(1, type.substring(0,3)+"%");
             ResultSet result = searchID.executeQuery();
             int i = 1;
             while(result.next()){
@@ -229,7 +232,7 @@ public class PostDB {
             else if(i<100)
                 // 0xx
                 return String.format("%s0%d" ,type, i);
-            else
+            else if(i<1000)
                 // xxx
                 return String.format("%s%d" ,type, i);
         } catch (SQLException throwables) {

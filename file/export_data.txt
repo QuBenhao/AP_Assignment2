@@ -1,48 +1,81 @@
-PostID: SAL001
-Title: TEST
-Description: TEST SALE
+PostID: EVE002
+Title: Programming Study Group Wednesday night
+Description: Let's meet this Wednesday afternoon to finish the programming assignment
 Status: OPEN
-CreatorID: s3795577
-Image: null
-Asking Price: 200.00
-Minimum Raise: 20.00
-Offer History:
-s3773865 offers 35.00
-s3773865 offers 100.00
+CreatorID: s3773865
+Image: RMIT_Library.jpg
+Venue: RMIT Library
+Date: 2020-05-20
+Capacity: 5
+Attendee List:
+Empty
 
-PostID: EVE001
-Title: TEST
-Description: TEST
+PostID: SAL002
+Title: IPad Air 2 64GB
+Description: Excellent working condition, comes with box, cable and charger.
+Status: CLOSED
+CreatorID: s3773865
+Image: IPad_Air2.jpg
+Asking Price: 300.00
+Minimum Raise: 15.00
+Offer History:
+s1111111 offers 300.00
+s3795577 offers 100.00
+
+PostID: EVE004
+Title: Advanced Programing Mid-Test
+Description: Online test
 Status: CLOSED
 CreatorID: s3773865
 Image: null
-Venue: Mel
-Date: 2020-05-14
-Capacity: 2
+Venue: Online
+Date: 2020-05-12
+Capacity: 1
 Attendee List:
-s1234567
 s3795577
 
 PostID: JOB001
-Title: TEST
-Description: TEST JOB
+Title: Moving House
+Description: Need a person to help me move my belongings to a new house
 Status: OPEN
 CreatorID: s3773865
-Image: null
-Proposed Price: 100.00
+Image: Moving.jpg
+Proposed Price: 90.00
 Offer History:
-s1111111 offers 1000.00
+s3795577 offers 200.00
 
-PostID: EVE002
-Title: RMIT Programming
-Description: Java
+PostID: EVE003
+Title: Movie on Sunday
+Description: See a movie this Sunday with a ticket discount applied to all group members.
 Status: OPEN
 CreatorID: s3773865
-Image: test.png
-Venue: Melbourne City
-Date: 2020-05-27
-Capacity: 10
+Image: Cinema.jpg
+Venue: Village Cinema
+Date: 2020-08-10
+Capacity: 4
 Attendee List:
-s1111111
 s3795577
+
+PostID: SAL001
+Title: 13-inch Macbook Pro 2018 sale
+Description: In good condition, ready to use
+Status: OPEN
+CreatorID: s3773865
+Image: Macbook_Pro2018.jpg
+Asking Price: 1850.00
+Minimum Raise: 40.00
+Offer History:
+Empty
+
+PostID: EVE001
+Title: Friday night out
+Description: Let's meet this Friday
+Status: OPEN
+CreatorID: s3773865
+Image: Melbourne_Central.jpg
+Venue: Melbourne Central
+Date: 2020-05-15
+Capacity: 5
+Attendee List:
+Empty
 

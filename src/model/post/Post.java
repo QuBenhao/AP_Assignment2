@@ -3,6 +3,7 @@ package model.post;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -88,6 +89,8 @@ public abstract class Post implements Serializable{
 		}
 
 		GridPane postDetails = new GridPane();
+		postDetails.setGridLinesVisible(false);
+		GridPane.setVgrow(postDetails,Priority.ALWAYS);
 		postDetails.setPrefWidth(500);
 		postDetails.setHgap(15);
 		postDetails.setVgap(15);
@@ -114,18 +117,26 @@ public abstract class Post implements Serializable{
 		Label TITLE = new Label("TITLE:");
 		TITLE.setStyle("-fx-font-weight: bold");
 		Label title = new Label(this.Title);
+		title.setWrapText(true);
+		title.setMaxWidth(150);
+		title.setPrefWidth(150);
 		postDetails.add(TITLE,2,0);
-		postDetails.add(title,3,0);
+		postDetails.add(title,3,0,1,2);
 		GridPane.setHalignment(TITLE, HPos.RIGHT);
 		GridPane.setHalignment(title,HPos.LEFT);
+		GridPane.setValignment(title, VPos.TOP);
 
 		Label DESCRIPTION = new Label ("DESCRIPTION:");
 		DESCRIPTION.setStyle("-fx-font-weight: bold");
 		Label description = new Label(this.Description);
+		description.setWrapText(true);
+		description.setMaxWidth(150);
+		description.setPrefWidth(150);
 		postDetails.add(DESCRIPTION,2,2);
-		postDetails.add(description,3,2);
+		postDetails.add(description,3,2,1,2);
 		GridPane.setHalignment(DESCRIPTION, HPos.RIGHT);
 		GridPane.setHalignment(description,HPos.LEFT);
+		GridPane.setValignment(description, VPos.TOP);
 
 		Label CREATORID = new Label("CREATOR ID:");
 		CREATORID.setStyle("-fx-font-weight: bold");

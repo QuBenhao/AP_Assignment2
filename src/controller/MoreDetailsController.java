@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -65,10 +66,14 @@ public class MoreDetailsController implements Switchable{
                         ArrayList<Node> remove = new ArrayList<>();
                         HashMap<Node, int[]> insert = new HashMap<>();
                         for (Node label : ((GridPane) node).getChildren()) {
+                            if(label instanceof Group)
+                                continue;
                             if (((GridPane) node).getColumnIndex(label) == 3
                                     || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 4)) {
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
+                                    if(LABEL instanceof Group)
+                                        continue;
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
@@ -110,11 +115,15 @@ public class MoreDetailsController implements Switchable{
                         ArrayList<Node> remove = new ArrayList<>();
                         HashMap<TextField, int[]> insert = new HashMap<>();
                         for (Node label : ((GridPane) node).getChildren()) {
+                            if(label instanceof Group)
+                                continue;
                             if (((GridPane) node).getColumnIndex(label) == 3
                                     || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 4)
                                     || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 5)) {
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
+                                    if(LABEL instanceof Group)
+                                        continue;
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
@@ -143,10 +152,14 @@ public class MoreDetailsController implements Switchable{
                         ArrayList<Node> remove = new ArrayList<>();
                         HashMap<TextField, int[]> insert = new HashMap<>();
                         for (Node label : ((GridPane) node).getChildren()) {
+                            if(label instanceof Group)
+                                continue;
                             if (((GridPane) node).getColumnIndex(label) == 3
                                     || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 3)){
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
+                                    if(LABEL instanceof Group)
+                                        continue;
                                     if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
                                         if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
@@ -202,6 +215,7 @@ public class MoreDetailsController implements Switchable{
     public void UploadImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload Post image");
+        fileChooser.setInitialDirectory(new File("./images/"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files","*.png", "*.jpg", "*.gif"));
         File selectedFile = fileChooser.showOpenDialog(UniLinkGUI.stages.get("EVENT"));
         if(selectedFile!=null){

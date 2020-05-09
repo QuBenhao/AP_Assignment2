@@ -118,6 +118,7 @@ public class NewPostController implements Switchable{
     public void UploadImage(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload Post image");
+        fileChooser.setInitialDirectory(new File("./images/"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files","*.png", "*.jpg", "*.gif"));
         File selectedFile = fileChooser.showOpenDialog(UniLinkGUI.stages.get("EVENT"));
         if(selectedFile!=null){
@@ -214,6 +215,7 @@ public class NewPostController implements Switchable{
             Alert alert = new Alert(Alert.AlertType.ERROR,String.format("Input with wrong Type!%s",numberFormatException.getMessage()));
             alert.showAndWait();
         } catch (Exception ex){
+            ex.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR,"Cannot sumbit when some textfields are left blank");
             alert.showAndWait();
         }

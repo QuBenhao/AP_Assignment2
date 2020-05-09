@@ -6,7 +6,6 @@ import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -15,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
 import model.database.ReplyDB;
+import model.exception.InputFormatException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class Sale extends Post {
 
 		Label HIGHESTOFFER = new Label("HIGHEST OFFER:");
 		HIGHESTOFFER.setStyle("-fx-font-weight: bold");
-		Label highestOffer = new Label(String.format("%.2f",this.HighestOffer));
+		Label highestOffer = new Label(String.format("$%.2f",this.HighestOffer));
 		if(this.HighestOffer==0)
 			highestOffer.setText("NULL");
 		postDetails.add(HIGHESTOFFER,0,3);
@@ -62,7 +62,7 @@ public class Sale extends Post {
 
 		Label MINIMUMRAISE = new Label("MINIMUM RAISE:");
 		MINIMUMRAISE.setStyle("-fx-font-weight: bold");
-		Label minimumRaise = new Label(String.format("%.2f",this.MinimumRaise));
+		Label minimumRaise = new Label(String.format("$%.2f",this.MinimumRaise));
 		postDetails.add(MINIMUMRAISE,0,4);
 		postDetails.add(minimumRaise,1,4);
 		GridPane.setHalignment(MINIMUMRAISE, HPos.RIGHT);
@@ -70,7 +70,7 @@ public class Sale extends Post {
 
 		if(User_ID.compareToIgnoreCase(super.getCreatorId())==0){
 			Label ASKINGPRICE = new Label("ASKING PRICE:");
-			Label askingprice = new Label(String.format("%.2f",this.AskingPrice));
+			Label askingprice = new Label(String.format("$%.2f",this.AskingPrice));
 			postDetails.add(ASKINGPRICE,0,5);
 			postDetails.add(askingprice,1,5);
 			GridPane.setHalignment(ASKINGPRICE, HPos.RIGHT);
@@ -93,8 +93,11 @@ public class Sale extends Post {
 						Double.parseDouble(input[2]);
 						this.handleReply(new Reply(input[0], input[1], Double.parseDouble(input[2])));
 					} catch (NumberFormatException ex) {
-						Alert alert = new Alert(Alert.AlertType.ERROR, "Input does not meet the format");
-						alert.showAndWait();
+						try{
+							throw new InputFormatException("Please input a number");
+						}catch (InputFormatException e){
+							e.display();
+						}
 					}
 				});
 			});

@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
 import model.database.ReplyDB;
+import model.exception.InputFormatException;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -100,9 +101,16 @@ public class Event extends Post {
 					try {
 						if (Integer.parseInt(input[2]) == 1)
 							this.handleReply(new Reply(input[0], input[1], Integer.parseInt(input[2])));
+						else {
+							Alert alert = new Alert(Alert.AlertType.INFORMATION, "Reply 1 to join");
+							alert.showAndWait();
+						}
 					} catch (NumberFormatException ex) {
-						Alert alert = new Alert(Alert.AlertType.ERROR, "Input does not meet the format");
-						alert.showAndWait();
+						try{
+							throw new InputFormatException("Please input an integer");
+						}catch (InputFormatException e){
+							e.display();
+						}
 					}
 				});
 

@@ -89,7 +89,7 @@ public class MainWindowController implements Switchable{
     private void ExportFile(ActionEvent actionEvent){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Export Data File To");
-        directoryChooser.setInitialDirectory(new File("././file/"));
+        directoryChooser.setInitialDirectory(new File("./file/"));
         File selectedDirectory = directoryChooser.showDialog(UniLinkGUI.stages.get("MAIN"));
         ExportData exportData = new ExportData(selectedDirectory.getAbsolutePath());
         try {
@@ -106,6 +106,7 @@ public class MainWindowController implements Switchable{
     private void ImportFile(ActionEvent actionEvent){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Import Data File");
+        fileChooser.setInitialDirectory(new File("./file/"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files","*.txt"));
         File selectedFile = fileChooser.showOpenDialog(UniLinkGUI.stages.get("MAIN"));
         if(selectedFile!=null){
