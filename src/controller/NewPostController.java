@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import main.UniLinkGUI;
 import model.database.PostDB;
+import model.exception.DataBaseFullException;
 import model.post.Event;
 import model.post.Job;
 import model.post.Post;
@@ -23,23 +24,26 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-public class NewPostController implements Switchable{
+public class NewPostController implements Switchable {
 
-    @FXML private ImageView PostImage;
-    @FXML private GridPane PostInput;
+    @FXML
+    private ImageView PostImage;
+
+    @FXML
+    private GridPane PostInput;
 
     private String type;
     private String User_ID;
     private String imageName = null;
 
     @FXML
-    public void setUp(String type,String User_ID) {
+    public void setUp(String type, String User_ID) {
         this.type = type;
         this.User_ID = User_ID;
         PostInput.setVgap(15);
         PostInput.setHgap(30);
 
-        if(type.compareToIgnoreCase("EVENT")==0) {
+        if (type.compareToIgnoreCase("EVENT") == 0) {
             Label TITLE = new Label("TITLE:");
             TextField title = new TextField();
             title.setId("title");
@@ -68,7 +72,7 @@ public class NewPostController implements Switchable{
             capacity.setId("capacity");
             PostInput.add(CAPACITY, 0, 4);
             PostInput.add(capacity, 0, 5);
-        }else if(type.compareToIgnoreCase("SALE")==0) {
+        } else if (type.compareToIgnoreCase("SALE") == 0) {
             Label TITLE = new Label("TITLE:");
             TextField title = new TextField();
             title.setId("title");
@@ -92,7 +96,7 @@ public class NewPostController implements Switchable{
             minimumraise.setId("minimumraise");
             PostInput.add(MINIMUMRAISE, 1, 2);
             PostInput.add(minimumraise, 1, 3);
-        }else if(type.compareToIgnoreCase("JOB")==0) {
+        } else if (type.compareToIgnoreCase("JOB") == 0) {
             Label TITLE = new Label("TITLE:");
             TextField title = new TextField();
             title.setId("title");
@@ -119,47 +123,47 @@ public class NewPostController implements Switchable{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload Post image");
         fileChooser.setInitialDirectory(new File("./images/"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files","*.png", "*.jpg", "*.gif"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
         File selectedFile = fileChooser.showOpenDialog(UniLinkGUI.stages.get("EVENT"));
-        if(selectedFile!=null){
+        if (selectedFile != null) {
             String imagepath = selectedFile.getAbsolutePath();
             String[] path = imagepath.split("/");
-            imageName = path[path.length-1];
+            imageName = path[path.length - 1];
             try {
-                PostImage.setImage(new Image(new FileInputStream(String.format("./images/%s",imageName))));
+                PostImage.setImage(new Image(new FileInputStream(String.format("./images/%s", imageName))));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             imageName = UniLinkGUI.Default_ImageName;
         }
     }
 
+    // validate user input before submit
     @FXML
     public void Submit(ActionEvent actionEvent) {
-        HashMap<String,Object> input = new HashMap<>();
+        HashMap<String, Object> input = new HashMap<>();
         PostDB postDB = new PostDB();
         Post post = null;
-        try{
-            for(Node node: PostInput.getChildren()){
-                if(node instanceof TextField){
-                    if(((TextField)node).getText().isEmpty())
+        try {
+            for (Node node : PostInput.getChildren()) {
+                if (node instanceof TextField) {
+                    if (((TextField) node).getText().isEmpty())
                         throw new Exception();
-                    if(node.getId().compareTo("capacity")==0)
+                    if (node.getId().compareTo("capacity") == 0)
                         Integer.valueOf(((TextField) node).getText());
-                    else if(node.getId().compareTo("askingprice")==0)
+                    else if (node.getId().compareTo("askingprice") == 0)
                         Double.valueOf(((TextField) node).getText());
-                    else if(node.getId().compareTo("minimumraise")==0)
+                    else if (node.getId().compareTo("minimumraise") == 0)
                         Double.valueOf(((TextField) node).getText());
-                    else if(node.getId().compareTo("proposedprice")==0)
+                    else if (node.getId().compareTo("proposedprice") == 0)
                         Double.valueOf(((TextField) node).getText());
-                    input.put(node.getId(),((TextField)node).getText());
+                    input.put(node.getId(), ((TextField) node).getText());
                 } else if (node instanceof DatePicker) {
-                    input.put("date",((DatePicker)node).getValue());
+                    input.put("date", ((DatePicker) node).getValue());
                 }
             }
-            if(type.compareToIgnoreCase("EVENT")==0){
+            if (type.compareToIgnoreCase("EVENT") == 0) {
                 /*
                 	public Event(String Id, String Title, String Description,
                 	String Status, String CreatorId,String Image, String Venue,
@@ -177,7 +181,7 @@ public class NewPostController implements Switchable{
                         Integer.parseInt(input.get("capacity").toString()),
                         0
                 );
-            } else if(type.compareToIgnoreCase("SALE")==0){
+            } else if (type.compareToIgnoreCase("SALE") == 0) {
                 /*
                 	public Sale(String Id, String Title, String Description,
                 	String Status, String CreatorId,String Image,
@@ -194,7 +198,7 @@ public class NewPostController implements Switchable{
                         Double.parseDouble(input.get("minimumraise").toString()),
                         0
                 );
-            } else if(type.compareToIgnoreCase("JOB")==0){
+            } else if (type.compareToIgnoreCase("JOB") == 0) {
                 /*
                 	public Job(String Id, String Title, String Description,String Status, String CreatorId,String Image,double ProposedPrice,double LowestOffer )
                  */
@@ -211,12 +215,13 @@ public class NewPostController implements Switchable{
             }
             postDB.newPost(post);
             switchStage();
-        }catch (NumberFormatException numberFormatException){
-            Alert alert = new Alert(Alert.AlertType.ERROR,String.format("Input with wrong Type!%s",numberFormatException.getMessage()));
+        } catch (NumberFormatException numberFormatException) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Input with wrong Type!%s", numberFormatException.getMessage()));
             alert.showAndWait();
-        } catch (Exception ex){
-            ex.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR,"Cannot sumbit when some textfields are left blank");
+        } catch (DataBaseFullException e) {
+            e.display();
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot sumbit when some textfields are left blank");
             alert.showAndWait();
         }
     }
@@ -227,7 +232,7 @@ public class NewPostController implements Switchable{
 
     @Override
     public void switchStage() {
-        ((MainWindowController)UniLinkGUI.controllers.get("MAIN")).UpdateView();
+        ((MainWindowController) UniLinkGUI.controllers.get("MAIN")).UpdateView();
         UniLinkGUI.stages.get("MAIN").show();
         UniLinkGUI.stages.get(type.toUpperCase()).close();
         UniLinkGUI.stages.remove(type.toUpperCase());

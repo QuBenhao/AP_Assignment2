@@ -13,27 +13,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import main.UniLinkGUI;
-import model.database.PostDB;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Post implements Serializable{	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+public abstract class Post implements Serializable{
 	// Parameters
 	private String Id;
 	private String Title;
 	private String Description;
 	private String CreatorId;
+	// Image Name
 	private String Image;
-	// open, status = 1; closed, status = 0;
+	// OPEN or CLOSED
 	private String Status;
 	private ArrayList<Reply> Replies;
 	
@@ -63,16 +57,30 @@ public abstract class Post implements Serializable{
 		return Replies;
 	}
 
+	public String getImage() {
+		return Image;
+	}
+
+	public String getTitle() {
+		return Title;
+	}
+
+	public String getDescription(){
+		return Description;
+	}
+
+	// Visualize Post as a HBox
 	public HBox visualize(String User_ID){
 		HBox hBox = new HBox();
 		hBox.setSpacing(30);
 		hBox.setPrefHeight(200);
 		hBox.setPadding(new Insets(10,10,10,10));
 		hBox.setAlignment(Pos.CENTER_LEFT);
+
+		// First child: ImageView
 		StringBuilder ImageURL = new StringBuilder("./images/");
 		ImageURL.append(this.Image);
 		ImageView imageView = null;
-
 		try {
 			FileInputStream input = new FileInputStream(ImageURL.toString());
 			imageView = new ImageView(new Image(input));
@@ -88,6 +96,7 @@ public abstract class Post implements Serializable{
 			HBox.setHgrow(imageView, Priority.ALWAYS);
 		}
 
+		// Second child: GridPane containing all the post details
 		GridPane postDetails = new GridPane();
 		postDetails.setGridLinesVisible(false);
 		GridPane.setVgrow(postDetails,Priority.ALWAYS);
@@ -96,6 +105,7 @@ public abstract class Post implements Serializable{
 		postDetails.setVgap(15);
 		postDetails.setAlignment(Pos.CENTER_LEFT);
 
+		// ColumnConstraints for the Gridpane
 		ColumnConstraints c1 = new ColumnConstraints();
 		c1.setPercentWidth(30);
 		ColumnConstraints c2 = new ColumnConstraints();
@@ -106,6 +116,7 @@ public abstract class Post implements Serializable{
 		c4.setPercentWidth(30);
 		postDetails.getColumnConstraints().addAll(c1, c2, c3, c4);
 
+		// Post ID
 		Label POSTID = new Label("POST ID:");
 		POSTID.setStyle("-fx-font-weight: bold");
 		Label postID = new Label(this.Id);
@@ -114,18 +125,22 @@ public abstract class Post implements Serializable{
 		GridPane.setHalignment(POSTID, HPos.RIGHT);
 		GridPane.setHalignment(postID,HPos.LEFT);
 
+		// Title
 		Label TITLE = new Label("TITLE:");
 		TITLE.setStyle("-fx-font-weight: bold");
 		Label title = new Label(this.Title);
+		// Wrap Text if it's too long
 		title.setWrapText(true);
 		title.setMaxWidth(150);
 		title.setPrefWidth(150);
 		postDetails.add(TITLE,2,0);
+		// merge two cells together
 		postDetails.add(title,3,0,1,2);
 		GridPane.setHalignment(TITLE, HPos.RIGHT);
 		GridPane.setHalignment(title,HPos.LEFT);
 		GridPane.setValignment(title, VPos.TOP);
 
+		// Description
 		Label DESCRIPTION = new Label ("DESCRIPTION:");
 		DESCRIPTION.setStyle("-fx-font-weight: bold");
 		Label description = new Label(this.Description);
@@ -138,6 +153,7 @@ public abstract class Post implements Serializable{
 		GridPane.setHalignment(description,HPos.LEFT);
 		GridPane.setValignment(description, VPos.TOP);
 
+		// Creator ID
 		Label CREATORID = new Label("CREATOR ID:");
 		CREATORID.setStyle("-fx-font-weight: bold");
 		Label creatorID = new Label(this.CreatorId);
@@ -146,6 +162,7 @@ public abstract class Post implements Serializable{
 		GridPane.setHalignment(CREATORID, HPos.RIGHT);
 		GridPane.setHalignment(creatorID,HPos.LEFT);
 
+		// Status
 		Label STATUS = new Label("STATUS:");
 		STATUS.setStyle("-fx-font-weight: bold");
 		Label status = new Label(this.Status);
@@ -155,21 +172,24 @@ public abstract class Post implements Serializable{
 		GridPane.setHalignment(status,HPos.LEFT);
 
 		hBox.getChildren().add(postDetails);
-
 		HBox.setHgrow(postDetails, Priority.ALWAYS);
 
+		// Third child: button
+		// If login User is the creator, there will be no Reply button
 		if(User_ID.compareToIgnoreCase(this.CreatorId)!=0){
 			Button reply = new Button("REPLY");
 			reply.setPrefWidth(120);
 			reply.setId("REPLY");
 			hBox.getChildren().add(reply);
 			HBox.setHgrow(reply, Priority.ALWAYS);
+			// If post status is 'CLOSED', Reply button is not visible and is disable
 			if(this.Status.compareToIgnoreCase("CLOSED")==0) {
 				reply.setVisible(false);
 				reply.setDisable(true);
 			}
 		}
 
+		// Only the creator of the post is able to see more details
 		if(User_ID.compareToIgnoreCase(this.CreatorId)==0) {
 			Button moredetails = new Button("MORE DETAILS");
 			moredetails.setId("");
@@ -187,21 +207,4 @@ public abstract class Post implements Serializable{
 	abstract public void handleReply(Reply reply);
 
 	abstract public void getReplyDetails();
-
-	public String getImage() {
-		return Image;
-	}
-
-	protected void closePost(){
-		PostDB postDB = new PostDB();
-		postDB.closePost(Id);
-	}
-
-	public String getTitle() {
-		return Title;
-	}
-
-	public String getDescription(){
-		return Description;
-	}
 }

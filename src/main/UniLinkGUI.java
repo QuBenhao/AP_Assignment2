@@ -14,9 +14,15 @@ import java.util.HashMap;
 
 public class UniLinkGUI extends Application{
 
+    // DB connection
     public static Connection con;
+
+    // Stages
     public static HashMap<String,Stage> stages = new HashMap<>();
+
+    // Controllers
     public static HashMap<String,Object> controllers = new HashMap<>();
+
     public static final String LOGIN_WINDOW = "/view/LoginWindow.fxml";
     public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
     public static final String MORE_DETAILS_WINDOW = "/view/MoreDetails.fxml";

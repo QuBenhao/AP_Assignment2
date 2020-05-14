@@ -21,11 +21,6 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class Job extends Post {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4L;
 
 	private double ProposedPrice;
 	private double LowestOffer;
@@ -36,9 +31,11 @@ public class Job extends Post {
 		this.LowestOffer = LowestOffer;
 	}
 
+	// add Job details to Post details
 	@Override
 	public HBox visualize(String User_ID) {
 		HBox hBox = super.visualize(User_ID);
+		// different color
 		hBox.setStyle("-fx-background-color: lightsteelblue");
 		GridPane postDetails = null;
 		Button reply = null;
@@ -49,6 +46,7 @@ public class Job extends Post {
 				reply = (Button) node;
 		}
 
+		// Proposed price
 		Label PROPOSEDPRICE = new Label("PROPOSED PRICE:");
 		PROPOSEDPRICE.setStyle("-fx-font-weight: bold");
 		Label proposed_price = new Label(String.format("$%.2f",this.ProposedPrice));
@@ -57,6 +55,7 @@ public class Job extends Post {
 		GridPane.setHalignment(PROPOSEDPRICE,HPos.RIGHT);
 		GridPane.setHalignment(proposed_price,HPos.LEFT);
 
+		// Lowest offer
 		Label LOWESTOFFER = new Label("LOWEST OFFER:");
 		LOWESTOFFER.setStyle("-fx-font-weight: bold");
 		Label lowest_offer = new Label(String.format("$%.2f",this.LowestOffer));
@@ -67,6 +66,7 @@ public class Job extends Post {
 		GridPane.setHalignment(LOWESTOFFER,HPos.RIGHT);
 		GridPane.setHalignment(lowest_offer,HPos.LEFT);
 
+		// Reply to a job
 		if(reply!=null){
 			final String[] input = new String[3];
 			input[0] = super.getPostId();

@@ -16,6 +16,7 @@ public class ExportData {
     private HashMap<Post, ArrayList<Reply>> data = new HashMap<>();
     private File file;
 
+    // Constructor: Load Post data
     public ExportData(String filepath) {
         file = new File(String.format("%s/export_data.txt",filepath));
         ArrayList<Post> posts = postDB.getPosts("ALL", "ALL", "ALL");
@@ -45,9 +46,6 @@ public class ExportData {
                     for (Reply reply : data.get(post))
                         writer.write(String.format("%s\n", reply.getResponderId()));
             } else if (post instanceof Sale) {
-                /*
-                   	double AskingPrice, double MinimumRaise,double HighestOffer
-                */
                 writer.write(String.format("Asking Price: %.2f\n", ((Sale) post).getAskingPrice()));
                 writer.write(String.format("Minimum Raise: %.2f\n", ((Sale) post).getMinimumRaise()));
                 writer.write("Offer History:\n");
@@ -57,9 +55,6 @@ public class ExportData {
                     for (Reply reply : data.get(post))
                         writer.write(String.format("%s offers %.2f\n", reply.getResponderId(), reply.getValue()));
             } else {
-                /*
-                   	double ProposedPrice,double LowestOffer
-                */
                 writer.write(String.format("Proposed Price: %.2f\n", ((Job) post).getProposedPrice()));
                 writer.write("Offer History:\n");
                 if (data.get(post).isEmpty())

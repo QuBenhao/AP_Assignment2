@@ -21,15 +21,10 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class Event extends Post {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2L;
-
 	private String Venue;
 	private String Date;
 	private int Capacity;
+	// AttendeesCount is the number of replies related to the Event
 	private int AttendeesCount;
 	
 	public Event(String Id, String Title, String Description,String Status, String CreatorId,String Image, String Venue, String Date, int Capacity,int AttendeesCount) {
@@ -40,11 +35,27 @@ public class Event extends Post {
 		this.AttendeesCount = AttendeesCount;
 	}
 
+	public String getVenue() {
+		return Venue;
+	}
+
+	public String getDate() {
+		return Date;
+	}
+
+	public int getCapacity() {
+		return Capacity;
+	}
+
+	// Add Event details to Post details
 	@Override
 	public HBox visualize(String User_ID) {
+		// load HBox from super class
 		HBox hBox = super.visualize(User_ID);
+		// Different color for different post
 		hBox.setStyle("-fx-background-color: lightblue");
 
+		// load GridPane and Reply button
 		GridPane postDetails = null;
 		Button reply = null;
 		for (Node node: hBox.getChildren()) {
@@ -54,6 +65,7 @@ public class Event extends Post {
 				reply = (Button) node;
 		}
 
+		// Venue
 		Label VENUE = new Label("VENUE:");
 		VENUE.setStyle("-fx-font-weight: bold");
 		Label venue = new Label(this.Venue);
@@ -62,6 +74,7 @@ public class Event extends Post {
 		GridPane.setHalignment(VENUE, HPos.RIGHT);
 		GridPane.setHalignment(venue,HPos.LEFT);
 
+		// Date
 		Label DATE = new Label("DATE:");
 		DATE.setStyle("-fx-font-weight: bold");
 		Label date = new Label(this.Date);
@@ -70,6 +83,7 @@ public class Event extends Post {
 		GridPane.setHalignment(DATE, HPos.RIGHT);
 		GridPane.setHalignment(date,HPos.LEFT);
 
+		// Capacity
 		Label CAPACITY = new Label("CAPACITY:");
 		CAPACITY.setStyle("-fx-font-weight: bold");
 		Label capacity = new Label(Integer.toString(this.Capacity));
@@ -78,6 +92,7 @@ public class Event extends Post {
 		GridPane.setHalignment(CAPACITY, HPos.RIGHT);
 		GridPane.setHalignment(capacity,HPos.LEFT);
 
+		// Attendees count
 		Label ATTENDEE_COUNT = new Label("ATTENDEE COUNT:");
 		ATTENDEE_COUNT.setStyle("-fx-font-weight: bold");
 		Label attendee_Count = new Label(Integer.toString(this.AttendeesCount));
@@ -86,6 +101,7 @@ public class Event extends Post {
 		GridPane.setHalignment(ATTENDEE_COUNT, HPos.RIGHT);
 		GridPane.setHalignment(attendee_Count,HPos.LEFT);
 
+		// Reply to an event
 		if(reply!=null) {
 			final String[] input = new String[3];
 			input[0] = super.getPostId();
@@ -149,21 +165,4 @@ public class Event extends Post {
 		UniLinkGUI.controllers.put("MOREDETAILS",controller);
 		UniLinkGUI.stages.get("MAIN").hide();
 	}
-
-	public String getVenue() {
-		return Venue;
-	}
-
-	public String getDate() {
-		return Date;
-	}
-
-	public int getCapacity() {
-		return Capacity;
-	}
-
-	public int getAttendeesCount() {
-		return AttendeesCount;
-	}
-
 }

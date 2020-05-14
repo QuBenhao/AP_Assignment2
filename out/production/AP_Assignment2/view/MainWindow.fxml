@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@focuscolor.css" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
+<AnchorPane style="-fx-background-color: lightgrey;" stylesheets="@focuscolor.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -93,15 +93,15 @@
                   <Insets />
                </VBox.margin>
             </ToolBar>
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: lightgrey;">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #4B535E;">
                <children>
-                  <Label alignment="CENTER" text="Post List">
+                  <Label alignment="CENTER" text="Post List" textFill="WHITE">
                      <font>
                         <Font size="30.0" />
                      </font>
                   </Label>
                   <Pane HBox.hgrow="ALWAYS" />
-                  <Label fx:id="User_ID" alignment="CENTER" text="Label">
+                  <Label fx:id="User_ID" alignment="CENTER" text="Label" textFill="WHITE">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -120,10 +120,10 @@
                   <Insets left="20.0" />
                </padding>
                <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
+                  <Insets />
                </VBox.margin>
             </HBox>
-            <ListView fx:id="mainContent" prefHeight="700.0" />
+            <ListView fx:id="mainContent" prefHeight="700.0" style="-fx-background-color: #4B535E;" stylesheets="@listview.css" />
          </children>
       </VBox>
    </children>

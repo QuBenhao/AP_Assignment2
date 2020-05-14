@@ -26,15 +26,20 @@ public class ReplyDB {
 
     private void SetUpSQL() {
         try {
+            // check if a user has already reply
             check = con.prepareStatement("SELECT * FROM REPLY WHERE POST_ID = ? AND USER_ID LIKE ?");
+
+            // Capacity to handle Event Reply
             event = con.prepareStatement("SELECT CAPACITY FROM EVENT WHERE POST_ID = ?");
+
+            // Asking Price and Minimum Raise to handle Sale Reply
             sale = con.prepareStatement("SELECT ASKING_PRICE,MINIMUM_RAISE FROM SALE WHERE POST_ID = ?");
         } catch (SQLException throwables) {
-            Alert alert = new Alert(Alert.AlertType.ERROR,throwables.toString());
-            alert.showAndWait();
+           System.out.println(throwables.toString());
         }
     }
 
+    // Loading replies for a post from Database
     public ArrayList<Reply> checkExist(String postID){
         ArrayList<Reply> replies = new ArrayList<>();
         try {
@@ -46,18 +51,21 @@ public class ReplyDB {
             }
         }
         catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         }
         return replies;
     }
 
+    // Check if a User has replied to a post
     public boolean checkExist(Reply reply,boolean exception){
         try {
+            // Sale and Job can reply with another offering value
             PreparedStatement check = con.prepareStatement("SELECT * FROM REPLY WHERE POST_ID = ? AND USER_ID = ? AND REPLY = ?");
             check.setString(1, reply.getPostId());
             check.setString(2, reply.getResponderId());
             check.setDouble(3,reply.getValue());
             ResultSet result = check.executeQuery();
+            // if exception, Print exception message
             if(exception)
                 if(result.next())
                     throw new AlreadyReplyException("You have already reply to this post!");
@@ -66,13 +74,14 @@ public class ReplyDB {
             return true;
         }
          catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         }catch (AlreadyReplyException ex){
             ex.display();
         }
         return false;
     }
 
+    // if attendees count equals capacity, close the event
     public void closeEvent(Reply reply){
         int capacity;
         try{
@@ -86,7 +95,7 @@ public class ReplyDB {
                 }
             }
         }catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         }
     }
 
@@ -102,6 +111,7 @@ public class ReplyDB {
                 askingprice = result.getDouble(1);
                 minimumraise = result.getDouble(2);
                 highestoffer = postDB.getHighestOffer(reply.getPostId());
+                // invalid offer price
                 if(reply.getValue()<highestoffer+minimumraise) {
                     if (highestoffer == 0)
                         throw new InvalidOfferPriceException(String.format("%.2f is less than minimum raise %.2f", reply.getValue(), minimumraise));
@@ -111,7 +121,7 @@ public class ReplyDB {
                 return true;
             }
         }catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         } catch (InvalidOfferPriceException e) {
             e.display();
         }
@@ -123,6 +133,7 @@ public class ReplyDB {
         try{
             PostDB postDB = new PostDB();
             lowestOffer = postDB.getLowestOffer(reply.getPostId());
+            // 0 means no offer yet
             if(lowestOffer == 0)
                 lowestOffer = Double.MAX_VALUE;
             if(reply.getValue()<lowestOffer)
@@ -130,7 +141,7 @@ public class ReplyDB {
             else
                 throw new InvalidOfferPriceException(String.format("%.2f is not less than current lowest offer %.2f",reply.getValue(),lowestOffer));
         }catch (SQLException throwables) {
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         } catch (InvalidOfferPriceException e) {
             e.display();
         }
@@ -144,6 +155,7 @@ public class ReplyDB {
             insert.setString(2,reply.getResponderId());
             insert.setDouble(3,reply.getValue());
             insert.executeUpdate();
+            // if info, display success message
             if(info) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Reply successfully");
                 alert.showAndWait();
@@ -152,7 +164,7 @@ public class ReplyDB {
                 this.closeEvent(reply);
             ((MainWindowController)UniLinkGUI.controllers.get("MAIN")).UpdateView();
         }catch (SQLException throwables){
-            throwables.printStackTrace();
+            System.out.println(throwables.toString());
         }
     }
 }

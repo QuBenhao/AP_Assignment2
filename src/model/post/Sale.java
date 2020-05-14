@@ -21,11 +21,6 @@ import java.util.Optional;
 
 public class Sale extends Post {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3L;
-	
 	private double AskingPrice;
 	private double HighestOffer;
 	private double MinimumRaise;
@@ -37,9 +32,23 @@ public class Sale extends Post {
 		this.MinimumRaise = MinimumRaise;
 	}
 
+	public double getAskingPrice() {
+		return AskingPrice;
+	}
+
+	public double getHighestOffer() {
+		return HighestOffer;
+	}
+
+	public double getMinimumRaise() {
+		return MinimumRaise;
+	}
+
+	// add Sale details to Post details
 	@Override
 	public HBox visualize(String User_ID) {
 		HBox hBox = super.visualize(User_ID);
+		// different color
 		hBox.setStyle("-fx-background-color: #87cefa");
 		GridPane postDetails = null;
 		Button reply = null;
@@ -50,6 +59,7 @@ public class Sale extends Post {
 				reply = (Button) node;
 		}
 
+		// Highest offer
 		Label HIGHESTOFFER = new Label("HIGHEST OFFER:");
 		HIGHESTOFFER.setStyle("-fx-font-weight: bold");
 		Label highestOffer = new Label(String.format("$%.2f",this.HighestOffer));
@@ -60,6 +70,7 @@ public class Sale extends Post {
 		GridPane.setHalignment(HIGHESTOFFER, HPos.RIGHT);
 		GridPane.setHalignment(highestOffer,HPos.LEFT);
 
+		// Minimum raise
 		Label MINIMUMRAISE = new Label("MINIMUM RAISE:");
 		MINIMUMRAISE.setStyle("-fx-font-weight: bold");
 		Label minimumRaise = new Label(String.format("$%.2f",this.MinimumRaise));
@@ -68,6 +79,7 @@ public class Sale extends Post {
 		GridPane.setHalignment(MINIMUMRAISE, HPos.RIGHT);
 		GridPane.setHalignment(minimumRaise,HPos.LEFT);
 
+		// Only the creator can see Asking price
 		if(User_ID.compareToIgnoreCase(super.getCreatorId())==0){
 			Label ASKINGPRICE = new Label("ASKING PRICE:");
 			Label askingprice = new Label(String.format("$%.2f",this.AskingPrice));
@@ -77,6 +89,7 @@ public class Sale extends Post {
 			GridPane.setHalignment(askingprice,HPos.LEFT);
 		}
 
+		// Reply to a Sale
 		if(reply!=null) {
 			final String[] input = new String[3];
 			input[0] = super.getPostId();
@@ -138,18 +151,4 @@ public class Sale extends Post {
 		UniLinkGUI.controllers.put("MOREDETAILS",controller);
 		UniLinkGUI.stages.get("MAIN").hide();
 	}
-
-
-	public double getAskingPrice() {
-		return AskingPrice;
-	}
-
-	public double getHighestOffer() {
-		return HighestOffer;
-	}
-
-	public double getMinimumRaise() {
-		return MinimumRaise;
-	}
-
 }

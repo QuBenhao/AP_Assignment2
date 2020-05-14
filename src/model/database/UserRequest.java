@@ -9,19 +9,18 @@ import java.sql.*;
 
 public class UserRequest {
     private Connection con;
+
+    // Login
     private final String searchQuery = "SELECT * FROM USER WHERE USER_ID = ? AND USER_PASSWORD = ?";
+    // Register
     private final String insertQuery = "INSERT INTO USER VALUES(?,?,?)";
+
     private PreparedStatement search = null;
     private PreparedStatement insert = null;
     private ResultSet result = null;
 
     public UserRequest(){
         this.con = UniLinkGUI.con;
-        SetUpSQL();
-    }
-
-    public UserRequest(Connection con){
-        this.con = con;
         SetUpSQL();
     }
 

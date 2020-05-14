@@ -23,13 +23,20 @@ public class ImportData {
 
         while(input.hasNextLine()){
             ArrayList<String> temp = new ArrayList<>();
+
+            // Moving to next post
             line = input.nextLine();
+
+            // Load each post data
             while(line != "" && line.length()!=0 && input.hasNextLine()) {
+                // "%s: %s\n"
                 String[] spl = line.split("\n")[0].split(": ");
+                // spl[spl.length-1] = 'Important data'
                 temp.add(spl[spl.length - 1]);
                 line = input.nextLine();
             }
 
+            // Recognize each type by line number
             ArrayList<Reply> reply = new ArrayList<>();
             if(temp.get(0).contains("EVE")){
                 if(temp.get(10).compareToIgnoreCase("Empty")!=0)

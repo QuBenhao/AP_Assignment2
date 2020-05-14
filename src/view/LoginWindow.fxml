@@ -15,18 +15,13 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="30.0" style="-fx-background-color: lightskyblue;">
                <children>
-                  <Label prefHeight="23.0" prefWidth="175.0" text="Welcome Back." textFill="WHITE">
+                  <Label prefHeight="23.0" prefWidth="175.0" style="visibility: false;" text="Welcome Back." textFill="WHITE">
                      <font>
                         <Font size="26.0" />
                      </font>
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
-                  </Label>
-                  <Label text="UniLink System" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
                   </Label>
                </children>
                <HBox.margin>
@@ -35,7 +30,7 @@
             </VBox>
             <VBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="20.0">
                <children>
-                  <Label text="Login">
+                  <Label text="UniLink System">
                      <font>
                         <Font size="20.0" />
                      </font>

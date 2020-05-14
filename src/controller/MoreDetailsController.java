@@ -38,6 +38,8 @@ public class MoreDetailsController implements Switchable{
     private Post post;
 
     private ObservableList<Label> replyView = FXCollections.observableArrayList();
+
+    // save all the changes to update later
     private HashMap<String,String> changes = new HashMap<>();
 
 
@@ -45,6 +47,7 @@ public class MoreDetailsController implements Switchable{
     public void initialize(){
     }
 
+    // Load post and reply data to the stage
     public void setUp(Post post, String title, ArrayList<Reply> replies){
         this.post = post;
         HBox postDetails = post.visualize(post.getCreatorId());
@@ -264,6 +267,7 @@ public class MoreDetailsController implements Switchable{
         }
     }
 
+    // Validate user input before saving form
     @FXML
     public void Save(ActionEvent actionEvent) {
         try{
@@ -313,6 +317,7 @@ public class MoreDetailsController implements Switchable{
         switchStage();
     }
 
+    // Back to main stage
     @Override
     public void switchStage() {
         ((MainWindowController) UniLinkGUI.controllers.get("MAIN")).UpdateView();

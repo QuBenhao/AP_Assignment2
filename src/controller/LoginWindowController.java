@@ -93,6 +93,7 @@ public class LoginWindowController implements Switchable{
         stage.setTitle("Main Window");
         stage.setScene(main_Scene);
         stage.show();
+        // Store stage and controller
         UniLinkGUI.stages.put("MAIN",stage);
         UniLinkGUI.controllers.put("LOGIN",this);
         UniLinkGUI.controllers.put("MAIN",controller);

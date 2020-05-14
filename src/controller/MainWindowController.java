@@ -37,6 +37,7 @@ public class MainWindowController implements Switchable{
     @FXML private ComboBox Creator;
     @FXML private ListView<VBox> mainContent;
 
+    // VBox with many HBox(Posts)
     private ObservableList<VBox> mainView = FXCollections.observableArrayList();
     private ObservableList<HBox> postView = FXCollections.observableArrayList();
 
@@ -55,6 +56,7 @@ public class MainWindowController implements Switchable{
         Creator.setValue("ALL");
     }
 
+    // Load post based on type,status and creator
     private void getPosts() {
         PostDB postDB = new PostDB();
         ArrayList<Post> posts;
@@ -63,10 +65,13 @@ public class MainWindowController implements Switchable{
         else
             posts = postDB.getPosts(Type.getValue().toString(),Status.getValue().toString(),User_ID.getText());
         for(Post post: posts){
+            // add posts to HBox view list
             postView.add(post.visualize(User_ID.getText()));
         }
         VBox vBox = new VBox();
+        vBox.setStyle("-fx-background-color: #4B535E");
         vBox.setSpacing(15);
+        // add HBox view list to VBox view list
         vBox.getChildren().addAll(postView);
         mainView.add(vBox);
         mainContent.setItems(mainView);
@@ -143,6 +148,7 @@ public class MainWindowController implements Switchable{
         switchStage("JOB");
     }
 
+    // Update ListView once anything has been changed
     public void UpdateView(){
         postView = FXCollections.observableArrayList();
         mainView = FXCollections.observableArrayList();
@@ -150,11 +156,13 @@ public class MainWindowController implements Switchable{
         mainContent.refresh();
     }
 
+    // Select any comboBox should result in different view
     @FXML
     public void Update(ActionEvent actionEvent) {
         UpdateView();
     }
 
+    // Back to login window
     @Override
     public void switchStage() {
         UniLinkGUI.stages.get("LOGIN").show();
@@ -163,6 +171,7 @@ public class MainWindowController implements Switchable{
         UniLinkGUI.controllers.remove("MAIN");
     }
 
+    // Launch a new post stage
     public void switchStage(String type){
         FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.NEW_POST_WINDOW));
         Parent main_Root = null;
