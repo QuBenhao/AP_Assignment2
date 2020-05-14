@@ -14,7 +14,7 @@ public class Reply implements Serializable{
 	private double Value;
 	private String ResponderId;
 	
-	public Reply(String PostId, double Value, String ResponderId) {
+	public Reply(String PostId, String ResponderId,double Value) {
 		this.PostId = PostId;
 		this.Value = Value;
 		this.ResponderId = ResponderId;

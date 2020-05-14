@@ -5,42 +5,58 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import main.UniLinkGUI;
-import model.database.User;
+import model.database.UserRequest;
+import model.exception.InputFormatException;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class LoginWindowController {
-    private Alert emptyIDError = new Alert(Alert.AlertType.ERROR,"ID cannot be empty!");
+public class LoginWindowController implements Switchable{
+    private final UserRequest userRequest = new UserRequest();
 
     @FXML private TextField nameTextField;
     @FXML private TextField passwordTextField;
 
     @FXML private void initialize(){
+
+    }
+
+    private void reset(){
+        nameTextField.setText("");
+        passwordTextField.setText("");
     }
 
     @FXML private void LoginButtonHandler(ActionEvent actionEvent){
         if(nameTextField.getText().equals("")){
-            emptyIDError.showAndWait();
-        }
-        else{
-            if(User.Login(UniLinkGUI.con,nameTextField.getText(),passwordTextField.getText())) {
-                switchStage();
+            try {
+                throw new InputFormatException("User ID cannot be empty!");
+            } catch (InputFormatException e) {
+                e.display();
             }
         }
+        else
+            try{
+                if(userRequest.Login(nameTextField.getText(),passwordTextField.getText()))
+                    switchStage();
+            }catch (InputFormatException ex) {
+                ex.display();
+            }
     }
 
     @FXML private void RegisterButtonHandler(ActionEvent actionEvent){
         if(nameTextField.getText().equals("")){
-            emptyIDError.showAndWait();
+            try {
+                throw new InputFormatException("User ID cannot be empty!");
+            } catch (InputFormatException e) {
+                e.display();
+            }
         }
         else {
-            String input[] = new String[3];
+            String[] input = new String[3];
             input[0] = nameTextField.getText();
             input[2] = passwordTextField.getText();
             TextInputDialog nameInput = new TextInputDialog("Default");
@@ -50,14 +66,18 @@ public class LoginWindowController {
             Optional<String> result = nameInput.showAndWait();
             result.ifPresent(name -> {
                 input[1] = name;
+                try {
+                    if (userRequest.Register(input))
+                        switchStage();
+                } catch (InputFormatException e) {
+                    e.display();
+                }
             });
-            if (User.Register(UniLinkGUI.con, input)){
-                switchStage();
-            }
         }
     }
 
-    private void switchStage(){
+    @Override
+    public void switchStage() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MAIN_WINDOW));
         Parent main_Root = null;
         try {
@@ -65,17 +85,19 @@ public class LoginWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MainWindowController controller = (MainWindowController) loader.getController();
+        MainWindowController controller = loader.getController();
         controller.SetUserID(nameTextField.getText());
-        Scene main_Scene = new Scene(main_Root,1200,800);
+        assert main_Root != null;
+        Scene main_Scene = new Scene(main_Root);
         Stage stage = new Stage();
         stage.setTitle("Main Window");
         stage.setScene(main_Scene);
         stage.show();
+        // Store stage and controller
         UniLinkGUI.stages.put("MAIN",stage);
         UniLinkGUI.controllers.put("LOGIN",this);
         UniLinkGUI.controllers.put("MAIN",controller);
         UniLinkGUI.stages.get("LOGIN").close();
+        reset();
     }
-
 }

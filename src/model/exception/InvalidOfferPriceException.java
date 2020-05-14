@@ -1,7 +1,7 @@
 package model.exception;
 
-public class InvalidOfferPriceException extends Exception{
-    public InvalidOfferPriceException(String message){
+public class InvalidOfferPriceException extends AlertException{
+    public InvalidOfferPriceException(String message) {
         super(message);
     }
 }

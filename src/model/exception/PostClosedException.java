@@ -1,7 +1,7 @@
 package model.exception;
 
-public class PostClosedException extends Exception{
-    public PostClosedException(String message){
+public class PostClosedException extends AlertException{
+    public PostClosedException(String message) {
         super(message);
     }
 }

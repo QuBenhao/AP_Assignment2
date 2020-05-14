@@ -1,7 +1,6 @@
 package model.exception;
-import java.lang.Exception;
-public class PostNotFoundException extends Exception {
-    public PostNotFoundException(String message){
+public class PostNotFoundException extends AlertException {
+    public PostNotFoundException(String message) {
         super(message);
     }
 }

@@ -14,23 +14,31 @@ import java.util.HashMap;
 
 public class UniLinkGUI extends Application{
 
+    // DB connection
     public static Connection con;
+
+    // Stages
     public static HashMap<String,Stage> stages = new HashMap<>();
+
+    // Controllers
     public static HashMap<String,Object> controllers = new HashMap<>();
-    public static final String LOGIN_WINDOW = "/view/login_window.fxml";
-    public static final String MAIN_WINDOW = "/view/main_window.fxml";
+
+    public static final String LOGIN_WINDOW = "/view/LoginWindow.fxml";
+    public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
+    public static final String MORE_DETAILS_WINDOW = "/view/MoreDetails.fxml";
+    public static final String NEW_POST_WINDOW = "/view/NewPost.fxml";
+    public static final String Default_ImageName = "No_image_available.png";
 
     public static void main(String[] args) {
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             con = DriverManager.getConnection("jdbc:hsqldb:file:database/UniLink", "SA", "");
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         launch(args);
         try {
+            con.commit();
             con.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -41,7 +49,7 @@ public class UniLinkGUI extends Application{
     public void start(Stage stage) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(LOGIN_WINDOW));
-            Scene scene = new Scene(root,600,400);
+            Scene scene = new Scene(root);
             stage.setTitle("Login Window");
             stage.setScene(scene);
             stage.show();
