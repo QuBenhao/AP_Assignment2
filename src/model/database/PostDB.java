@@ -360,7 +360,6 @@ public class PostDB {
 
     // Import file and upload data to database
     public void uploadData(HashMap<Post, ArrayList<Reply>> readData) {
-        ReplyDB replyDB = new ReplyDB();
         try {
             PreparedStatement check = con.prepareStatement("SELECT * FROM POST WHERE POST_ID = ?");
             readData.forEach((k, v) -> {
@@ -369,9 +368,10 @@ public class PostDB {
                     if (!check.executeQuery().next())
                         this.newPost(k);
                     for (Reply r : v) {
-                        if (replyDB.checkExist(r, false))
-                            replyDB.join(r, false);
+                        k.handleReply(r);
                     }
+                    if(k.getStatus().compareToIgnoreCase("CLOSED")==0)
+                        this.closePost(k.getPostId());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

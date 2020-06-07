@@ -12,10 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ReplyDB {
     private final Connection con;
-    private PreparedStatement check = null;
+    private PreparedStatement search = null;
     private PreparedStatement event = null;
     private PreparedStatement sale = null;
 
@@ -26,8 +28,8 @@ public class ReplyDB {
 
     private void SetUpSQL() {
         try {
-            // check if a user has already reply
-            check = con.prepareStatement("SELECT * FROM REPLY WHERE POST_ID = ? AND USER_ID LIKE ?");
+            // check if a post has any replies
+            search = con.prepareStatement("SELECT * FROM REPLY WHERE POST_ID = ?");
 
             // Capacity to handle Event Reply
             event = con.prepareStatement("SELECT CAPACITY FROM EVENT WHERE POST_ID = ?");
@@ -43,11 +45,23 @@ public class ReplyDB {
     public ArrayList<Reply> checkExist(String postID){
         ArrayList<Reply> replies = new ArrayList<>();
         try {
-            check.setString(1, postID);
-            check.setString(2, "%");
-            ResultSet result = check.executeQuery();
+            search.setString(1, postID);
+            ResultSet result = search.executeQuery();
             while(result.next()){
                 replies.add(new Reply(result.getString(1),result.getString(2),result.getDouble(3)));
+            }
+            // JOB should be displayed in a DESC order
+            if(!replies.isEmpty() && postID.contains("JOB")){
+                Collections.sort(replies, new Comparator<Reply>() {
+                    @Override
+                    public int compare(Reply o1, Reply o2) {
+                        if(o1.getValue()>o2.getValue())
+                            return -1;
+                        else if(o1.getValue()<o2.getValue())
+                            return 1;
+                        return 0;
+                    }
+                });
             }
         }
         catch (SQLException throwables) {

@@ -18,6 +18,7 @@ import model.database.ReplyDB;
 import model.exception.InputFormatException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Event extends Post {
@@ -164,5 +165,24 @@ public class Event extends Post {
 		UniLinkGUI.stages.put("MOREDETAILS",stage);
 		UniLinkGUI.controllers.put("MOREDETAILS",controller);
 		UniLinkGUI.stages.get("MAIN").hide();
+	}
+
+	@Override
+	public String toString(){
+		StringBuilder s = new StringBuilder(super.toString());
+		s.append(String.format("Venue: %s\n", this.Venue));
+		s.append(String.format("Date: %s\n", this.Date));
+		s.append(String.format("Capacity: %d\n", this.Capacity));
+		s.append("Attendee List:\n");
+		ReplyDB replyDB = new ReplyDB();
+		ArrayList<Reply> replies = replyDB.checkExist(super.getPostId());
+		if (replies.isEmpty())
+			s.append("Empty\n");
+		else {
+			for (Reply reply : replies) {
+				s.append(String.format("%s\n", reply.getResponderId()));
+			}
+		}
+		return s.toString();
 	}
 }

@@ -33,15 +33,11 @@ public class UniLinkGUI extends Application{
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             con = DriverManager.getConnection("jdbc:hsqldb:file:database/UniLink", "SA", "");
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        launch(args);
-        try {
+            launch(args);
             con.commit();
             con.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -119,7 +118,7 @@ public class NewPostController implements Switchable {
     }
 
     @FXML
-    public void UploadImage(ActionEvent actionEvent) {
+    public void UploadImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload Post image");
         fileChooser.setInitialDirectory(new File("./images/"));
@@ -141,7 +140,7 @@ public class NewPostController implements Switchable {
 
     // validate user input before submit
     @FXML
-    public void Submit(ActionEvent actionEvent) {
+    public void Submit() {
         HashMap<String, Object> input = new HashMap<>();
         PostDB postDB = new PostDB();
         Post post = null;
@@ -226,7 +225,8 @@ public class NewPostController implements Switchable {
         }
     }
 
-    public void BackToMainWindow(ActionEvent actionEvent) {
+    @FXML
+    public void BackToMainWindow() {
         switchStage();
     }
 

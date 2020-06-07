@@ -2,13 +2,13 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,14 +37,15 @@ public class MoreDetailsController implements Switchable{
     private ImageView imageView;
     private Post post;
 
-    private ObservableList<Label> replyView = FXCollections.observableArrayList();
+    private final ObservableList<Label> replyView = FXCollections.observableArrayList();
 
     // save all the changes to update later
-    private HashMap<String,String> changes = new HashMap<>();
+    private final HashMap<String,String> changes = new HashMap<>();
 
 
     @FXML
     public void initialize(){
+        ReplyDetails.addEventFilter(MouseEvent.ANY, javafx.event.Event::consume);
     }
 
     // Load post and reply data to the stage
@@ -71,14 +72,14 @@ public class MoreDetailsController implements Switchable{
                         for (Node label : ((GridPane) node).getChildren()) {
                             if(label instanceof Group)
                                 continue;
-                            if (((GridPane) node).getColumnIndex(label) == 3
-                                    || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 4)) {
+                            if (GridPane.getColumnIndex(label) == 3
+                                    || (GridPane.getColumnIndex(label) == 1 && GridPane.getRowIndex(label) == 4)) {
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if(LABEL instanceof Group)
                                         continue;
-                                    if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
-                                        if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
+                                    if (GridPane.getColumnIndex(LABEL) == GridPane.getColumnIndex(label) - 1)
+                                        if (GridPane.getRowIndex(LABEL).equals(GridPane.getRowIndex(label)))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
@@ -86,10 +87,10 @@ public class MoreDetailsController implements Switchable{
                                 });
                                 remove.add(label);
                                 int[] position = new int[2];
-                                position[0] = ((GridPane) node).getColumnIndex(label);
-                                position[1] = ((GridPane) node).getRowIndex(label);
+                                position[0] = GridPane.getColumnIndex(label);
+                                position[1] = GridPane.getRowIndex(label);
                                 insert.put(temp, position);
-                            } else if ((((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 3)
+                            } else if ((GridPane.getColumnIndex(label) == 1 && GridPane.getRowIndex(label) == 3)
                             ) {
                                 DatePicker temp = new DatePicker();
                                 LocalDate date = LocalDate.parse(((Label)label).getText());
@@ -99,8 +100,8 @@ public class MoreDetailsController implements Switchable{
                                 }));
                                 remove.add(label);
                                 int[] position = new int[2];
-                                position[0] = ((GridPane) node).getColumnIndex(label);
-                                position[1] = ((GridPane) node).getRowIndex(label);
+                                position[0] = GridPane.getColumnIndex(label);
+                                position[1] = GridPane.getRowIndex(label);
                                 insert.put(temp, position);
                             }
                         }
@@ -120,15 +121,15 @@ public class MoreDetailsController implements Switchable{
                         for (Node label : ((GridPane) node).getChildren()) {
                             if(label instanceof Group)
                                 continue;
-                            if (((GridPane) node).getColumnIndex(label) == 3
-                                    || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 4)
-                                    || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 5)) {
+                            if (GridPane.getColumnIndex(label) == 3
+                                    || (GridPane.getColumnIndex(label) == 1 && GridPane.getRowIndex(label) == 4)
+                                    || (GridPane.getColumnIndex(label) == 1 && GridPane.getRowIndex(label) == 5)) {
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if(LABEL instanceof Group)
                                         continue;
-                                    if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
-                                        if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
+                                    if (GridPane.getColumnIndex(LABEL) == GridPane.getColumnIndex(label) - 1)
+                                        if (GridPane.getRowIndex(LABEL).equals(GridPane.getRowIndex(label)))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
@@ -136,8 +137,8 @@ public class MoreDetailsController implements Switchable{
                                 });
                                 remove.add(label);
                                 int[] position = new int[2];
-                                position[0] = ((GridPane) node).getColumnIndex(label);
-                                position[1] = ((GridPane) node).getRowIndex(label);
+                                position[0] = GridPane.getColumnIndex(label);
+                                position[1] = GridPane.getRowIndex(label);
                                 insert.put(temp, position);
                             }
                         }
@@ -157,14 +158,14 @@ public class MoreDetailsController implements Switchable{
                         for (Node label : ((GridPane) node).getChildren()) {
                             if(label instanceof Group)
                                 continue;
-                            if (((GridPane) node).getColumnIndex(label) == 3
-                                    || (((GridPane) node).getColumnIndex(label) == 1 && ((GridPane) node).getRowIndex(label) == 3)){
+                            if (GridPane.getColumnIndex(label) == 3
+                                    || (GridPane.getColumnIndex(label) == 1 && GridPane.getRowIndex(label) == 3)){
                                 TextField temp = new TextField(((Label) label).getText());
                                 for (Node LABEL : ((GridPane) node).getChildren()) {
                                     if(LABEL instanceof Group)
                                         continue;
-                                    if (((GridPane) node).getColumnIndex(LABEL) == ((GridPane) node).getColumnIndex(label) - 1)
-                                        if (((GridPane) node).getRowIndex(LABEL) == ((GridPane) node).getRowIndex(label))
+                                    if (GridPane.getColumnIndex(LABEL) == GridPane.getColumnIndex(label) - 1)
+                                        if (GridPane.getRowIndex(LABEL).equals(GridPane.getRowIndex(label)))
                                             temp.setId(((Label) LABEL).getText().split(":")[0].replaceAll(" ","_"));
                                 }
                                 temp.textProperty().addListener((observable,oldvalue,newvalue) -> {
@@ -172,8 +173,8 @@ public class MoreDetailsController implements Switchable{
                                 });
                                 remove.add(label);
                                 int[] position = new int[2];
-                                position[0] = ((GridPane) node).getColumnIndex(label);
-                                position[1] = ((GridPane) node).getRowIndex(label);
+                                position[0] = GridPane.getColumnIndex(label);
+                                position[1] = GridPane.getRowIndex(label);
                                 insert.put(temp, position);
                             }
                         }
@@ -215,7 +216,7 @@ public class MoreDetailsController implements Switchable{
     }
 
     @FXML
-    public void UploadImage(ActionEvent actionEvent) {
+    public void UploadImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Upload Post image");
         fileChooser.setInitialDirectory(new File("./images/"));
@@ -239,37 +240,41 @@ public class MoreDetailsController implements Switchable{
     }
 
     @FXML
-    public void ClosePost(ActionEvent actionEvent) {
+    public void ClosePost() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Warning !");
         alert.setContentText("Are you sure you want to close this post ?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            PostDB postDB = new PostDB();
-            postDB.closePost(post.getPostId());
-            switchStage();
+        if(result.isPresent()) {
+            if (result.get() == ButtonType.OK) {
+                PostDB postDB = new PostDB();
+                postDB.closePost(post.getPostId());
+                switchStage();
+            }
         }
     }
 
     @FXML
-    public void DeletePost(ActionEvent actionEvent) {
+    public void DeletePost() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Warning !");
         alert.setContentText("Are you sure you want to delete this post ?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            PostDB postDB = new PostDB();
-            postDB.deletePost(post.getPostId());
-            switchStage();
+        if(result.isPresent()) {
+            if (result.get() == ButtonType.OK) {
+                PostDB postDB = new PostDB();
+                postDB.deletePost(post.getPostId());
+                switchStage();
+            }
         }
     }
 
     // Validate user input before saving form
     @FXML
-    public void Save(ActionEvent actionEvent) {
+    public void Save() {
         try{
             for(Node root: PostDetails.getChildren()){
                 if(root instanceof HBox) {
@@ -313,7 +318,7 @@ public class MoreDetailsController implements Switchable{
     }
 
     @FXML
-    public void BackToMainWindow(ActionEvent actionEvent) {
+    public void BackToMainWindow() {
         switchStage();
     }
 

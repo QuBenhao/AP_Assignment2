@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,7 +29,7 @@ public class LoginWindowController implements Switchable{
         passwordTextField.setText("");
     }
 
-    @FXML private void LoginButtonHandler(ActionEvent actionEvent){
+    @FXML private void LoginButtonHandler(){
         if(nameTextField.getText().equals("")){
             try {
                 throw new InputFormatException("User ID cannot be empty!");
@@ -47,7 +46,7 @@ public class LoginWindowController implements Switchable{
             }
     }
 
-    @FXML private void RegisterButtonHandler(ActionEvent actionEvent){
+    @FXML private void RegisterButtonHandler(){
         if(nameTextField.getText().equals("")){
             try {
                 throw new InputFormatException("User ID cannot be empty!");

@@ -17,6 +17,7 @@ import model.database.ReplyDB;
 import model.exception.InputFormatException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Sale extends Post {
@@ -150,5 +151,23 @@ public class Sale extends Post {
 		UniLinkGUI.stages.put("MOREDETAILS",stage);
 		UniLinkGUI.controllers.put("MOREDETAILS",controller);
 		UniLinkGUI.stages.get("MAIN").hide();
+	}
+
+	@Override
+	public String toString(){
+		StringBuilder s = new StringBuilder(super.toString());
+		s.append(String.format("Asking Price: %.2f\n", this.AskingPrice));
+		s.append(String.format("Minimum Raise: %.2f\n", this.MinimumRaise));
+		s.append("Offer History:\n");
+		ReplyDB replyDB = new ReplyDB();
+		ArrayList<Reply> replies = replyDB.checkExist(super.getPostId());
+		if (replies.isEmpty())
+			s.append("Empty\n");
+		else {
+			for (Reply reply : replies) {
+				s.append(String.format("%s offers %.2f\n", reply.getResponderId(), reply.getValue()));
+			}
+		}
+		return s.toString();
 	}
 }

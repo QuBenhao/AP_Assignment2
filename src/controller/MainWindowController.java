@@ -2,12 +2,14 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -24,9 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainWindowController implements Switchable{
-    String[] selectType = {"ALL","EVENT","SALE","JOB"};
-    String[] selectStatus = {"ALL","OPEN","CLOSED"};
-    String[] selectCreator = {"ALL","MY POST"};
+    private static final String[] selectType = {"ALL","EVENT","SALE","JOB"};
+    private static final String[] selectStatus = {"ALL","OPEN","CLOSED"};
+    private static final String[] selectCreator = {"ALL","MY POST"};
 
     @FXML private Label User_ID;
     @FXML private ComboBox<String> Type;
@@ -76,7 +78,7 @@ public class MainWindowController implements Switchable{
     }
 
     @FXML
-    protected void DisplayDeveloperInfo(ActionEvent actionEvent){
+    protected void DisplayDeveloperInfo(){
         Alert alert = new Alert( Alert.AlertType.INFORMATION,"Benhao Qu\ns3773865");
         alert.setTitle("Developer Info");
         alert.setHeaderText("Developed by");
@@ -84,12 +86,12 @@ public class MainWindowController implements Switchable{
     }
 
     @FXML
-    private void Quit(ActionEvent actionEvent) {
+    private void Quit() {
         switchStage();
     }
 
     @FXML
-    private void ExportFile(ActionEvent actionEvent){
+    private void ExportFile(){
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Export Data File To");
         directoryChooser.setInitialDirectory(new File("./file/"));
@@ -106,7 +108,7 @@ public class MainWindowController implements Switchable{
     }
 
     @FXML
-    private void ImportFile(ActionEvent actionEvent){
+    private void ImportFile(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Import Data File");
         fileChooser.setInitialDirectory(new File("./file/"));
@@ -132,17 +134,17 @@ public class MainWindowController implements Switchable{
     }
 
     @FXML
-    public void NewEvent(ActionEvent actionEvent) {
+    public void NewEvent() {
         switchStage("EVENT");
     }
 
     @FXML
-    public void NewSale(ActionEvent actionEvent) {
+    public void NewSale() {
         switchStage("SALE");
     }
 
     @FXML
-    public void NewJob(ActionEvent actionEvent) {
+    public void NewJob() {
         switchStage("JOB");
     }
 
@@ -156,7 +158,7 @@ public class MainWindowController implements Switchable{
 
     // Select any comboBox should result in different view
     @FXML
-    public void Update(ActionEvent actionEvent) {
+    public void Update() {
         UpdateView();
     }
 

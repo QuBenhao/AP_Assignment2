@@ -207,4 +207,16 @@ public abstract class Post implements Serializable{
 	abstract public void handleReply(Reply reply);
 
 	abstract public void getReplyDetails();
+
+	@Override
+	public String toString(){
+		StringBuilder s = new StringBuilder("");
+		s.append(String.format("PostID: %s\n", this.Id));
+		s.append(String.format("Title: %s\n", this.Title));
+		s.append(String.format("Description: %s\n", this.Description));
+		s.append(String.format("Status: %s\n", this.Status));
+		s.append(String.format("CreatorID: %s\n", this.CreatorId));
+		s.append(String.format("Image: %s\n", this.Image));
+		return s.toString();
+	}
 }
