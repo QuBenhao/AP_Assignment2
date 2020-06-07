@@ -1,3 +1,15 @@
+PostID: SAL001
+Title: 13-inch Macbook Pro 2018 sale
+Description: In good condition, ready to use
+Status: OPEN
+CreatorID: s3773865
+Image: Macbook_Pro2018.jpg
+Asking Price: 1850.00
+Minimum Raise: 40.00
+Offer History:
+s1111111 offers 1000.00
+s3795577 offers 1100.00
+
 PostID: EVE002
 Title: Programming Study Group Wednesday night
 Description: Let's meet this Wednesday afternoon to finish the programming assignment
@@ -10,29 +22,16 @@ Capacity: 5
 Attendee List:
 Empty
 
-PostID: SAL002
-Title: IPad Air 2 64GB
-Description: Excellent working condition, comes with box, cable and charger.
-Status: CLOSED
+PostID: JOB002
+Title: Delivery
+Description: Need a person to help me deliver a package to Melbourne Central
+Status: OPEN
 CreatorID: s3773865
-Image: IPad_Air2.jpg
-Asking Price: 300.00
-Minimum Raise: 15.00
+Image: delivery.png
+Proposed Price: 20.00
 Offer History:
-s1111111 offers 300.00
 s3795577 offers 100.00
-
-PostID: EVE004
-Title: Advanced Programing Mid-Test
-Description: Online test
-Status: CLOSED
-CreatorID: s3773865
-Image: null
-Venue: Online
-Date: 2020-05-12
-Capacity: 1
-Attendee List:
-s3795577
+s1111111 offers 50.00
 
 PostID: JOB001
 Title: Moving House
@@ -43,29 +42,45 @@ Image: Moving.jpg
 Proposed Price: 90.00
 Offer History:
 s3795577 offers 200.00
+s1111111 offers 100.00
+
+PostID: EVE004
+Title: Advanced Programming Mid-Test
+Description: Online test
+Status: CLOSED
+CreatorID: s3773865
+Image: null
+Venue: Online
+Date: 2020-05-12
+Capacity: 2
+Attendee List:
+s1111111
+s3795577
 
 PostID: EVE003
 Title: Movie on Sunday
 Description: See a movie this Sunday with a ticket discount applied to all group members.
-Status: OPEN
+Status: CLOSED
 CreatorID: s3773865
 Image: Cinema.jpg
 Venue: Village Cinema
 Date: 2020-08-10
 Capacity: 4
 Attendee List:
+s1111111
 s3795577
 
-PostID: SAL001
-Title: 13-inch Macbook Pro 2018 sale
-Description: In good condition, ready to use
+PostID: SAL002
+Title: IPad Air 2 64GB
+Description: Excellent working condition, comes with box, cable and charger.
 Status: OPEN
 CreatorID: s3773865
-Image: Macbook_Pro2018.jpg
-Asking Price: 1850.00
-Minimum Raise: 40.00
+Image: IPad_Air2.jpg
+Asking Price: 300.00
+Minimum Raise: 15.00
 Offer History:
-Empty
+s1111111 offers 100.00
+s3795577 offers 200.00
 
 PostID: EVE001
 Title: Friday night out

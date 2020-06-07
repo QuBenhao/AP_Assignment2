@@ -12,16 +12,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-public class UniLinkGUI extends Application{
+public class UniLinkGUI extends Application {
 
     // DB connection
     public static Connection con;
 
     // Stages
-    public static HashMap<String,Stage> stages = new HashMap<>();
+    public static final HashMap<String, Stage> stages = new HashMap<>();
 
     // Controllers
-    public static HashMap<String,Object> controllers = new HashMap<>();
+    public static final HashMap<String, Object> controllers = new HashMap<>();
 
     public static final String LOGIN_WINDOW = "/view/LoginWindow.fxml";
     public static final String MAIN_WINDOW = "/view/MainWindow.fxml";
@@ -49,7 +49,7 @@ public class UniLinkGUI extends Application{
             stage.setTitle("Login Window");
             stage.setScene(scene);
             stage.show();
-            stages.put("LOGIN",stage);
+            stages.put("LOGIN", stage);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import main.UniLinkGUI;
 import model.database.PostDB;
 import model.exception.DataBaseFullException;
+import model.exception.InputFormatException;
 import model.post.Event;
 import model.post.Job;
 import model.post.Post;
@@ -149,14 +150,15 @@ public class NewPostController implements Switchable {
                 if (node instanceof TextField) {
                     if (((TextField) node).getText().isEmpty())
                         throw new Exception();
-                    if (node.getId().compareTo("capacity") == 0)
-                        Integer.valueOf(((TextField) node).getText());
-                    else if (node.getId().compareTo("askingprice") == 0)
-                        Double.valueOf(((TextField) node).getText());
-                    else if (node.getId().compareTo("minimumraise") == 0)
-                        Double.valueOf(((TextField) node).getText());
-                    else if (node.getId().compareTo("proposedprice") == 0)
-                        Double.valueOf(((TextField) node).getText());
+                    if (node.getId().compareTo("capacity") == 0) {
+                        if (Integer.parseInt(((TextField) node).getText()) <= 0)
+                            throw new InputFormatException("Please Enter a positive integer for capacity");
+                    } else if (node.getId().compareTo("askingprice") == 0
+                            || node.getId().compareTo("minimumraise") == 0
+                            || node.getId().compareTo("proposedprice") == 0) {
+                        if (Double.parseDouble(((TextField) node).getText()) <= 0)
+                            throw new InputFormatException("Please Enter a positive number for askingprice");
+                    }
                     input.put(node.getId(), ((TextField) node).getText());
                 } else if (node instanceof DatePicker) {
                     input.put("date", ((DatePicker) node).getValue());
@@ -217,7 +219,7 @@ public class NewPostController implements Switchable {
         } catch (NumberFormatException numberFormatException) {
             Alert alert = new Alert(Alert.AlertType.ERROR, String.format("Input with wrong Type!%s", numberFormatException.getMessage()));
             alert.showAndWait();
-        } catch (DataBaseFullException e) {
+        } catch (DataBaseFullException | InputFormatException e) {
             e.display();
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot sumbit when some textfields are left blank");

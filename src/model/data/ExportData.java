@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ExportData {
-    private PostDB postDB = new PostDB();
-    private ArrayList<Post> data;
-    private File file;
+    private final ArrayList<Post> data;
+    private final File file;
 
     // Constructor: Load Post data
     public ExportData(String filepath) {
-        file = new File(String.format("%s/export_data.txt",filepath));
+        file = new File(String.format("%s/export_data.txt", filepath));
+        PostDB postDB = new PostDB();
         data = postDB.getPosts("ALL", "ALL", "ALL");
     }
 

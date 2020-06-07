@@ -14,47 +14,50 @@ import model.exception.InputFormatException;
 import java.io.IOException;
 import java.util.Optional;
 
-public class LoginWindowController implements Switchable{
+public class LoginWindowController implements Switchable {
     private final UserRequest userRequest = new UserRequest();
 
-    @FXML private TextField nameTextField;
-    @FXML private TextField passwordTextField;
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField passwordTextField;
 
-    @FXML private void initialize(){
+    @FXML
+    private void initialize() {
 
     }
 
-    private void reset(){
+    private void reset() {
         nameTextField.setText("");
         passwordTextField.setText("");
     }
 
-    @FXML private void LoginButtonHandler(){
-        if(nameTextField.getText().equals("")){
+    @FXML
+    private void LoginButtonHandler() {
+        if (nameTextField.getText().equals("")) {
             try {
                 throw new InputFormatException("User ID cannot be empty!");
             } catch (InputFormatException e) {
                 e.display();
             }
-        }
-        else
-            try{
-                if(userRequest.Login(nameTextField.getText(),passwordTextField.getText()))
+        } else
+            try {
+                if (userRequest.Login(nameTextField.getText(), passwordTextField.getText()))
                     switchStage();
-            }catch (InputFormatException ex) {
+            } catch (InputFormatException ex) {
                 ex.display();
             }
     }
 
-    @FXML private void RegisterButtonHandler(){
-        if(nameTextField.getText().equals("")){
+    @FXML
+    private void RegisterButtonHandler() {
+        if (nameTextField.getText().equals("")) {
             try {
                 throw new InputFormatException("User ID cannot be empty!");
             } catch (InputFormatException e) {
                 e.display();
             }
-        }
-        else {
+        } else {
             String[] input = new String[3];
             input[0] = nameTextField.getText();
             input[2] = passwordTextField.getText();
@@ -93,9 +96,9 @@ public class LoginWindowController implements Switchable{
         stage.setScene(main_Scene);
         stage.show();
         // Store stage and controller
-        UniLinkGUI.stages.put("MAIN",stage);
-        UniLinkGUI.controllers.put("LOGIN",this);
-        UniLinkGUI.controllers.put("MAIN",controller);
+        UniLinkGUI.stages.put("MAIN", stage);
+        UniLinkGUI.controllers.put("LOGIN", this);
+        UniLinkGUI.controllers.put("MAIN", controller);
         UniLinkGUI.stages.get("LOGIN").close();
         reset();
     }

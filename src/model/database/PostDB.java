@@ -326,8 +326,8 @@ public class PostDB {
                         || key.compareToIgnoreCase("PROPOSED_PRICE") == 0)
                     update.setDouble(1, Double.parseDouble(changes.get(key)));
                 int result = update.executeUpdate();
-                if(result!=1){
-                    Alert alert = new Alert(Alert.AlertType.ERROR,"Update details failed");
+                if (result != 1) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Update details failed");
                     alert.showAndWait();
                 }
             }
@@ -370,7 +370,7 @@ public class PostDB {
                     for (Reply r : v) {
                         k.handleReply(r);
                     }
-                    if(k.getStatus().compareToIgnoreCase("CLOSED")==0)
+                    if (k.getStatus().compareToIgnoreCase("CLOSED") == 0)
                         this.closePost(k.getPostId());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
