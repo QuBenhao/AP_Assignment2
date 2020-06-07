@@ -49,7 +49,7 @@ public class Sale extends Post {
 	public HBox visualize(String User_ID) {
 		HBox hBox = super.visualize(User_ID);
 		// different color
-		hBox.setStyle("-fx-background-color: #87cefa");
+		hBox.setStyle("-fx-background-color: lightpink");
 		GridPane postDetails = null;
 		Button reply = null;
 		for (Node node: hBox.getChildren()){

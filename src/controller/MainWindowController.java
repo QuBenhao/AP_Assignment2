@@ -7,10 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -32,9 +29,9 @@ public class MainWindowController implements Switchable{
     String[] selectCreator = {"ALL","MY POST"};
 
     @FXML private Label User_ID;
-    @FXML private ComboBox Type;
-    @FXML private ComboBox Status;
-    @FXML private ComboBox Creator;
+    @FXML private ComboBox<String> Type;
+    @FXML private ComboBox<String> Status;
+    @FXML private ComboBox<String> Creator;
     @FXML private ListView<VBox> mainContent;
 
     // VBox with many HBox(Posts)
@@ -54,6 +51,7 @@ public class MainWindowController implements Switchable{
         Type.setValue("ALL");
         Status.setValue("ALL");
         Creator.setValue("ALL");
+        mainContent.setFocusModel(null);
     }
 
     // Load post based on type,status and creator

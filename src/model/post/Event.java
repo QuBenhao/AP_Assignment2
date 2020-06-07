@@ -53,7 +53,7 @@ public class Event extends Post {
 		// load HBox from super class
 		HBox hBox = super.visualize(User_ID);
 		// Different color for different post
-		hBox.setStyle("-fx-background-color: lightblue");
+		hBox.setStyle("-fx-background-color: lightcyan");
 
 		// load GridPane and Reply button
 		GridPane postDetails = null;

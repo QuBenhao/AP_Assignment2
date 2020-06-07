@@ -36,7 +36,7 @@ public class Job extends Post {
 	public HBox visualize(String User_ID) {
 		HBox hBox = super.visualize(User_ID);
 		// different color
-		hBox.setStyle("-fx-background-color: lightsteelblue");
+		hBox.setStyle("-fx-background-color: lightyellow");
 		GridPane postDetails = null;
 		Button reply = null;
 		for (Node node: hBox.getChildren()){
