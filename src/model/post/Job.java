@@ -112,7 +112,6 @@ public class Job extends Post {
             }
     }
 
-
     public void getReplyDetails() {
         ReplyDB replyDB = new ReplyDB();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(UniLinkGUI.MORE_DETAILS_WINDOW));
@@ -135,7 +134,6 @@ public class Job extends Post {
         UniLinkGUI.controllers.put("MOREDETAILS", controller);
         UniLinkGUI.stages.get("MAIN").hide();
     }
-
 
     public double getProposedPrice() {
         return ProposedPrice;

@@ -206,8 +206,6 @@ public abstract class Post implements Serializable {
         return hBox;
     }
 
-    ;
-
     abstract public void handleReply(Reply reply);
 
     abstract public void getReplyDetails();

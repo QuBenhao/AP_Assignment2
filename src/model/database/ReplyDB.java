@@ -50,6 +50,19 @@ public class ReplyDB {
             while (result.next()) {
                 replies.add(new Reply(result.getString(1), result.getString(2), result.getDouble(3)));
             }
+            // Sale should be displayed in an ASC order
+            if (!replies.isEmpty() && postID.contains("SAL")) {
+                Collections.sort(replies, new Comparator<Reply>() {
+                    @Override
+                    public int compare(Reply o1, Reply o2) {
+                        if (o1.getValue() < o2.getValue())
+                            return -1;
+                        else if (o1.getValue() > o2.getValue())
+                            return 1;
+                        return 0;
+                    }
+                });
+            }
             // JOB should be displayed in a DESC order
             if (!replies.isEmpty() && postID.contains("JOB")) {
                 Collections.sort(replies, new Comparator<Reply>() {

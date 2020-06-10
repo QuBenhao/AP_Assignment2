@@ -65,10 +65,10 @@ public class MainWindowController implements Switchable {
     private void getPosts() {
         PostDB postDB = new PostDB();
         ArrayList<Post> posts;
-        if (Creator.getValue().toString().compareToIgnoreCase("ALL") == 0)
-            posts = postDB.getPosts(Type.getValue().toString(), Status.getValue().toString(), Creator.getValue().toString());
+        if (Creator.getValue().compareToIgnoreCase("ALL") == 0)
+            posts = postDB.getPosts(Type.getValue(), Status.getValue(), Creator.getValue());
         else
-            posts = postDB.getPosts(Type.getValue().toString(), Status.getValue().toString(), User_ID.getText());
+            posts = postDB.getPosts(Type.getValue(), Status.getValue(), User_ID.getText());
         for (Post post : posts) {
             // add posts to HBox view list
             postView.add(post.visualize(User_ID.getText()));
