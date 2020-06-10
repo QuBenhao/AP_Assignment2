@@ -293,7 +293,11 @@ public class MoreDetailsController implements Switchable {
                                     } else if (node.getId().compareToIgnoreCase("asking_price") == 0
                                             || node.getId().compareToIgnoreCase("minimum_raise") == 0
                                             || node.getId().compareToIgnoreCase("proposed_price") == 0) {
-                                        if (Double.parseDouble(((TextField) node).getText()) <= 0)
+                                        String value = ((TextField) node).getText();
+                                        if(value.charAt(0)=='$'){
+                                            value = value.substring(1);
+                                        }
+                                        if (Double.parseDouble(value) <= 0)
                                             throw new InputFormatException("Please Enter a positive number for askingprice");
                                     }
                                 }

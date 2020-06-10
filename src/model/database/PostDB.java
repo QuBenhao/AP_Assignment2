@@ -323,8 +323,13 @@ public class PostDB {
                     update.setInt(1, Integer.parseInt(changes.get(key)));
                 else if (key.compareToIgnoreCase("ASKING_PRICE") == 0
                         || key.compareToIgnoreCase("MINIMUM_RAISE") == 0
-                        || key.compareToIgnoreCase("PROPOSED_PRICE") == 0)
-                    update.setDouble(1, Double.parseDouble(changes.get(key)));
+                        || key.compareToIgnoreCase("PROPOSED_PRICE") == 0) {
+                    String value = changes.get(key);
+                    if(value.charAt(0)=='$'){
+                        value = value.substring(1);
+                    }
+                    update.setDouble(1, Double.parseDouble(value));
+                }
                 int result = update.executeUpdate();
                 if (result != 1) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Update details failed");
